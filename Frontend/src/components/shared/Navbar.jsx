@@ -1,14 +1,20 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Avatar, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { LogOut, Menu, User2, X } from "lucide-react";
 import { motion } from "framer-motion";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
-  const user = false;
+  const [isPopoverOpen, setPopoverOpen] = useState(false); // State to manage popover visibility
+  const { user } = useSelector((store) => store.user);
+
+  // Handle click on avatar to toggle popover
+  const togglePopover = () => {
+    setPopoverOpen(!isPopoverOpen);
+  };
 
   return (
     <motion.div
@@ -72,43 +78,57 @@ const Navbar = () => {
               </Link>
             </div>
           ) : (
-            <Popover>
-              <PopoverTrigger asChild>
-                <Avatar className="transition-transform duration-300 hover:scale-110">
+            <>
+              {/* Avatar to toggle popover */}
+              <div className="relative">
+                <Avatar
+                  className="transition-transform duration-300 hover:scale-110 cursor-pointer"
+                  onClick={togglePopover} // Trigger toggle on click
+                >
                   <AvatarImage
                     src="https://github.com/shadcn.png"
                     alt="@shadcn"
                     className="transition-all duration-300"
                   />
                 </Avatar>
-              </PopoverTrigger>
-              <PopoverContent className="w-64 opacity-0 scale-95 transition-all duration-300 ease-in-out transform group-hover:opacity-100 group-hover:scale-100">
-                <div className="flex gap-4 space-y-2">
-                  <Avatar>
-                    <AvatarImage
-                      src="https://github.com/shadcn.png"
-                      alt="@shadcn"
-                    />
-                  </Avatar>
-                  <div>
-                    <h4 className="font-medium">Kumar</h4>
-                    <p className="text-sm text-muted-foreground">
-                      Welcome back! Explore more jobs today.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex flex-col text-gray-600">
-                  <div className="flex w-fit items-center gap-2 cursor-pointer hover:text-[#8338ec] transition-colors duration-300">
-                    <User2 size={20} />
-                    <Button variant="link">View Profile</Button>
-                  </div>
-                </div>
-                <div className="flex w-fit items-center gap-2 cursor-pointer hover:text-[#8338ec] transition-colors duration-300">
-                  <LogOut size={20} />
-                  <Button variant="link">Logout</Button>
-                </div>
-              </PopoverContent>
-            </Popover>
+
+                {/* Popover content with smooth animations */}
+                {isPopoverOpen && (
+                  <motion.div
+                    className="absolute right-0 mt-2 w-64 bg-white border rounded-lg shadow-lg z-50 p-4"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <div className="flex gap-4 space-y-2">
+                      <Avatar>
+                        <AvatarImage
+                          src="https://github.com/shadcn.png"
+                          alt="@shadcn"
+                        />
+                      </Avatar>
+                      <div>
+                        <h4 className="font-medium">Kumar</h4>
+                        <p className="text-sm text-muted-foreground">
+                          Welcome back! Explore more jobs today.
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex flex-col text-gray-600">
+                      <div className="flex w-fit items-center gap-2 cursor-pointer hover:text-[#8338ec] transition-colors duration-300">
+                        <User2 size={20} />
+                        <Button variant="link"><Link to='/profile'>View Profile</Link></Button>
+                      </div>
+                    </div>
+                    <div className="flex w-fit items-center gap-2 cursor-pointer hover:text-[#8338ec] transition-colors duration-300">
+                      <LogOut size={20} />
+                      <Button variant="link">Logout</Button>
+                    </div>
+                  </motion.div>
+                )}
+              </div>
+            </>
           )}
         </div>
       </div>

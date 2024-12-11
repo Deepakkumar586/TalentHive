@@ -10,7 +10,7 @@ import { USER_API_END_POINT } from "@/utils/constant";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { Loader2 } from "lucide-react";
-import { setLoading } from "@/redux/userSlice";
+import { setLoading, setUser } from "@/redux/userSlice";
 import { motion } from "framer-motion";
 
 const Login = () => {
@@ -28,6 +28,7 @@ const Login = () => {
     setInput((prev) => ({ ...prev, [name]: value }));
   };
 
+  // login Handler
   const loginHandler = async (event) => {
     event.preventDefault();
     try {
@@ -40,6 +41,7 @@ const Login = () => {
       });
 
       if (res.data.success) {
+        dispatch(setUser(res.data.user));
         toast.success(res.data.message);
         navigate("/");
       }
