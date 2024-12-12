@@ -1,19 +1,43 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { LogOut, Menu, User2, X } from "lucide-react";
 import { motion } from "framer-motion";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "sonner";
+import axios from "axios";
+import { USER_API_END_POINT } from "@/utils/constant";
+import { setUser } from "@/redux/userSlice";
 
 const Navbar = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [isPopoverOpen, setPopoverOpen] = useState(false); // State to manage popover visibility
   const { user } = useSelector((store) => store.user);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Handle click on avatar to toggle popover
   const togglePopover = () => {
     setPopoverOpen(!isPopoverOpen);
+  };
+
+  // handle logut
+  const logOutHandler = async () => {
+    try {
+      const res = await axios.post(USER_API_END_POINT + "/logout", {
+        withCredentials: true,
+      });
+
+      if (res.data.success) {
+        dispatch(setUser(null));
+        navigate("/");
+        toast.success(res.data.message);
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error(err.response?.data?.message);
+    }
   };
 
   return (
@@ -86,7 +110,7 @@ const Navbar = () => {
                   onClick={togglePopover} // Trigger toggle on click
                 >
                   <AvatarImage
-                    src="https://github.com/shadcn.png"
+                    src={user?.profile?.profilePhoto}
                     alt="@shadcn"
                     className="transition-all duration-300"
                   />
@@ -104,26 +128,30 @@ const Navbar = () => {
                     <div className="flex gap-4 space-y-2">
                       <Avatar>
                         <AvatarImage
-                          src="https://github.com/shadcn.png"
+                          src={user?.profile?.profilePhoto}
                           alt="@shadcn"
                         />
                       </Avatar>
                       <div>
-                        <h4 className="font-medium">Kumar</h4>
+                        <h4 className="font-medium">{user?.fullname}</h4>
                         <p className="text-sm text-muted-foreground">
-                          Welcome back! Explore more jobs today.
+                          {user?.profile?.bio}
                         </p>
                       </div>
                     </div>
                     <div className="flex flex-col text-gray-600">
                       <div className="flex w-fit items-center gap-2 cursor-pointer hover:text-[#8338ec] transition-colors duration-300">
                         <User2 size={20} />
-                        <Button variant="link"><Link to='/profile'>View Profile</Link></Button>
+                        <Button variant="link">
+                          <Link to="/profile">View Profile</Link>
+                        </Button>
                       </div>
                     </div>
                     <div className="flex w-fit items-center gap-2 cursor-pointer hover:text-[#8338ec] transition-colors duration-300">
                       <LogOut size={20} />
-                      <Button variant="link">Logout</Button>
+                      <Button onClick={logOutHandler} variant="link">
+                        Logout
+                      </Button>
                     </div>
                   </motion.div>
                 )}

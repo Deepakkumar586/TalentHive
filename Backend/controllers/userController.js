@@ -1,8 +1,9 @@
 const User = require("../models/user");
-// const { signupValidator } = require("../utils/validations");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const validator = require("validator");
+const cloudinary = require("../utils/cloudinary");
+const getDataUri = require("../utils/dataUri");
 
 exports.signup = async (req, res) => {
   try {
@@ -14,10 +15,13 @@ exports.signup = async (req, res) => {
         success: false,
       });
     }
-    // const file = req.file;
-    // const fileUri = getDataUri(file);
-    // const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+     // Handle file with Cloudinary
+     const file = req.file;
+     const fileUri = getDataUri(file);
+     const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
 
+
+    //  find user
     const user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({
@@ -32,9 +36,9 @@ exports.signup = async (req, res) => {
       email,
       password: hashedPassword,
       role,
-      // profile:{
-      //     profilePhoto:cloudResponse.secure_url,
-      // }
+      profile:{
+          profilePhoto:cloudResponse.secure_url,
+      }
     });
 
     return res.status(201).json({
@@ -90,7 +94,7 @@ exports.login = async (req, res) => {
       _id: user._id,
       fullname: user.fullname,
       email: user.email,
-      phoneNumber: user.phoneNumber,
+      phonenumber: user.phonenumber,
       role: user.role,
       profile: user.profile,
     };
@@ -129,18 +133,21 @@ exports.logout = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
   try {
-    const { fullname, email, phoneNumber, bio, skills } = req.body;
+    const { fullname, email, phonenumber, bio, skills } = req.body;
 
-    // const file = req.file;
-    // cloudinary ayega idhar
-    // const fileUri = getDataUri(file);
-    // const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+    // Handle file with Cloudinary
+    const file = req.file;
+    const fileUri = getDataUri(file);
+    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
 
+    // Handle skills in array
     let skillsArray;
     if (skills) {
-      skillsArray = skills.split(",");
+      skillsArray = skills.split(","); // Convert string to array
     }
-    const userId = req.id; // middleware authentication
+
+    // Check user
+    const userId = req.id; // Middleware adds user ID to req
     let user = await User.findById(userId);
 
     if (!user) {
@@ -149,26 +156,28 @@ exports.updateProfile = async (req, res) => {
         success: false,
       });
     }
-    // updating data
+
+    // Update fields
     if (fullname) user.fullname = fullname;
     if (email) user.email = email;
-    if (phoneNumber) user.phoneNumber = phoneNumber;
+    if (phonenumber) user.phonenumber = phonenumber;
     if (bio) user.profile.bio = bio;
     if (skills) user.profile.skills = skillsArray;
 
-    // resume comes later here...
-    // if (cloudResponse) {
-    //   user.profile.resume = cloudResponse.secure_url; // save the cloudinary url
-    //   user.profile.resumeOriginalName = file.originalname; // Save the original file name
-    // }
+    // Resume handler
+    if (cloudResponse) {
+      user.profile.resume = cloudResponse.secure_url; // Save the Cloudinary URL
+      user.profile.resumeOriginalName = file.originalname; // Save the original file name
+    }
 
     await user.save();
 
+    // Return updated user details
     user = {
       _id: user._id,
       fullname: user.fullname,
       email: user.email,
-      phoneNumber: user.phoneNumber,
+      phonenumber: user.phonenumber,
       role: user.role,
       profile: user.profile,
     };
@@ -179,6 +188,10 @@ exports.updateProfile = async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    return res.status(500).json({
+      message: "An error occurred while updating the profile.",
+      success: false,
+    });
   }
 };

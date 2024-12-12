@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading } from "@/redux/userSlice";
 import { Loader2 } from "lucide-react";
+import { motion } from "framer-motion";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -51,7 +52,7 @@ const Signup = () => {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-        withCredentials: true, // Include cookies for authentication if needed
+        withCredentials: true,
       });
 
       if (res.data.success) {
@@ -60,7 +61,7 @@ const Signup = () => {
       }
     } catch (err) {
       if (err.response) {
-        console.error("Error Response:", err.response.data); // Debugging
+        console.error("Error Response:", err.response.data);
         toast.error(
           err.response.data.message || "Signup failed. Please try again."
         );
@@ -74,18 +75,29 @@ const Signup = () => {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className=" min-h-screen flex flex-col">
       <Navbar />
-      <div className="flex items-center justify-center max-w-7xl mx-auto">
+      <motion.div
+        className="flex items-center justify-center flex-grow"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
         <form
           onSubmit={signUpHandler}
-          className="w-full max-w-md bg-white shadow-lg rounded-lg p-6 my-10 space-y-3"
+          className="w-full max-w-md bg-white shadow-2xl rounded-lg p-6 space-y-3"
         >
-          <h1 className="font-bold text-2xl text-center text-gray-800 mb-4">
+          <motion.h1
+            className="font-bold text-2xl text-center text-purple-700"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
             Create Your Account
-          </h1>
+          </motion.h1>
+
           <div>
-            <Label className="block mb-2 font-medium text-gray-600">
+            <Label className="block mb-2 font-medium text-gray-700">
               Full Name
             </Label>
             <Input
@@ -94,12 +106,12 @@ const Signup = () => {
               value={input.fullname}
               name="fullname"
               onChange={changeEventHandler}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-[#8338ec] focus:border-[#8338ec]"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-purple-600 focus:border-purple-600"
               required
             />
           </div>
           <div>
-            <Label className="block mb-2 font-medium text-gray-600">
+            <Label className="block mb-2 font-medium text-gray-700">
               Email
             </Label>
             <Input
@@ -108,12 +120,12 @@ const Signup = () => {
               name="email"
               value={input.email}
               onChange={changeEventHandler}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-[#8338ec] focus:border-[#8338ec]"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-purple-600 focus:border-purple-600"
               required
             />
           </div>
           <div>
-            <Label className="block mb-2 font-medium text-gray-600">
+            <Label className="block mb-2 font-medium text-gray-700">
               Password
             </Label>
             <Input
@@ -122,14 +134,14 @@ const Signup = () => {
               name="password"
               value={input.password}
               onChange={changeEventHandler}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-[#8338ec] focus:border-[#8338ec]"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-purple-600 focus:border-purple-600"
               required
             />
           </div>
 
           <div className="space-y-4">
             <div>
-              <Label className="block font-medium text-gray-600 mb-2">
+              <Label className="block font-medium text-gray-700 mb-2">
                 Select Role
               </Label>
               <RadioGroup className="flex items-center space-x-6">
@@ -140,7 +152,7 @@ const Signup = () => {
                     value="student"
                     checked={input.role === "student"}
                     onChange={changeEventHandler}
-                    className="cursor-pointer focus:ring-[#8338ec] text-[#8338ec]"
+                    className="cursor-pointer focus:ring-purple-600 text-purple-600"
                     required
                   />
                   <Label className="ml-2">Student</Label>
@@ -152,7 +164,7 @@ const Signup = () => {
                     value="recruiter"
                     checked={input.role === "recruiter"}
                     onChange={changeEventHandler}
-                    className="cursor-pointer focus:ring-[#8338ec] text-[#8338ec]"
+                    className="cursor-pointer focus:ring-purple-600 text-purple-600"
                     required
                   />
                   <Label className="ml-2">Recruiter</Label>
@@ -161,7 +173,7 @@ const Signup = () => {
             </div>
 
             <div>
-              <Label className="block font-medium text-gray-600 mb-2">
+              <Label className="block font-medium text-gray-700 mb-2">
                 Profile Photo
               </Label>
               <Input
@@ -169,7 +181,7 @@ const Signup = () => {
                 type="file"
                 name="file"
                 onChange={changeFileHandler}
-                className="block w-full px-3 py-2 border border-gray-300 rounded-md cursor-pointer focus:outline-none focus:ring-[#8338ec] focus:border-[#8338ec]"
+                className="block w-full px-3 py-2 border border-gray-300 rounded-md cursor-pointer focus:outline-none focus:ring-purple-600 focus:border-purple-600"
                 required
               />
             </div>
@@ -177,7 +189,7 @@ const Signup = () => {
 
           {loading ? (
             <Button
-              className="w-full py-2 text-white bg-gray-800 rounded-md disabled:opacity-50"
+              className="w-full py-2 text-white bg-purple-600 rounded-md disabled:opacity-50"
               disabled
             >
               <Loader2 className="m-2 h-4 w-4 animate-spin" />
@@ -186,22 +198,22 @@ const Signup = () => {
           ) : (
             <Button
               type="submit"
-              className="w-full py-2 text-white bg-gray-800 rounded-md"
+              className="w-full py-2 text-white bg-purple-600 hover:bg-purple-700 transition duration-300 rounded-md"
             >
               Signup
             </Button>
           )}
-          <p className="text-center text-gray-600 mt-4">
+          <p className="text-center text-gray-700 mt-4">
             Already Have an Account?{" "}
             <Link
               to="/login"
-              className="text-[#8338ec] hover:underline transition duration-300"
+              className="text-purple-600 hover:underline transition duration-300"
             >
               Login
             </Link>
           </p>
         </form>
-      </div>
+      </motion.div>
     </div>
   );
 };
