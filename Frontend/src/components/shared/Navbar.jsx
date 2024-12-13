@@ -12,17 +12,15 @@ import { setUser } from "@/redux/userSlice";
 
 const Navbar = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
-  const [isPopoverOpen, setPopoverOpen] = useState(false); // State to manage popover visibility
+  const [isPopoverOpen, setPopoverOpen] = useState(false);
   const { user } = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Handle click on avatar to toggle popover
   const togglePopover = () => {
     setPopoverOpen(!isPopoverOpen);
   };
 
-  // handle logut
   const logOutHandler = async () => {
     try {
       const res = await axios.post(USER_API_END_POINT + "/logout", {
@@ -55,7 +53,7 @@ const Navbar = () => {
           </h1>
         </div>
 
-        {/* Hamburger Menu (Mobile) */}
+        {/* Hamburger Menu */}
         <div className="lg:hidden">
           <button
             onClick={() => setMenuOpen(!isMenuOpen)}
@@ -71,7 +69,6 @@ const Navbar = () => {
             isMenuOpen ? "block" : "hidden"
           } lg:flex flex-col lg:flex-row items-center gap-8 lg:gap-10 lg:static absolute top-16 left-0 w-full bg-white lg:bg-transparent lg:w-auto lg:p-0 p-6 shadow-lg lg:shadow-none`}
         >
-          {/* Navigation Menu */}
           <ul className="flex flex-col lg:flex-row font-medium items-center gap-6 lg:gap-8">
             <li className="hover:text-[#8338ec] transition-colors duration-300">
               <Link to="/">Home</Link>
@@ -84,7 +81,6 @@ const Navbar = () => {
             </li>
           </ul>
 
-          {/* Login/Signup or User Profile */}
           {!user ? (
             <div className="flex items-center gap-4">
               <Link to="/login">
@@ -102,61 +98,61 @@ const Navbar = () => {
               </Link>
             </div>
           ) : (
-            <>
-              {/* Avatar to toggle popover */}
-              <div className="relative">
-                <Avatar
-                  className="transition-transform duration-300 hover:scale-110 cursor-pointer"
-                  onClick={togglePopover} // Trigger toggle on click
-                >
-                  <AvatarImage
-                    src={user?.profile?.profilePhoto}
-                    alt="@shadcn"
-                    className="transition-all duration-300"
-                  />
-                </Avatar>
+            <div className="relative">
+              {/* Avatar */}
+              <Avatar
+                className="transition-transform duration-300 hover:scale-110 cursor-pointer"
+                onClick={togglePopover}
+              >
+                <AvatarImage
+                  src={
+                    user?.profile?.profilePhoto ||
+                    "https://via.placeholder.com/150"
+                  }
+                  alt="User Avatar"
+                />
+              </Avatar>
 
-                {/* Popover content with smooth animations */}
-                {isPopoverOpen && (
-                  <motion.div
-                    className="absolute right-0 mt-2 w-64 bg-white border rounded-lg shadow-lg z-50 p-4"
-                    initial={{ opacity: 0, y: -10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <div className="flex gap-4 space-y-2">
-                      <Avatar>
-                        <AvatarImage
-                          src={user?.profile?.profilePhoto}
-                          alt="@shadcn"
-                        />
-                      </Avatar>
-                      <div>
-                        <h4 className="font-medium">{user?.fullname}</h4>
-                        <p className="text-sm text-muted-foreground">
-                          {user?.profile?.bio}
-                        </p>
-                      </div>
+              {/* Popover */}
+              {isPopoverOpen && (
+                <motion.div
+                  className="absolute right-0 mt-2 w-64 bg-white border rounded-lg shadow-lg z-50 p-4"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="flex gap-4 space-y-2">
+                    <Avatar>
+                      <AvatarImage
+                        src={user?.profile?.profilePhoto}
+                        alt="User Avatar"
+                      />
+                    </Avatar>
+                    <div>
+                      <h4 className="font-medium">{user?.fullname}</h4>
+                      <p className="text-sm text-muted-foreground">
+                        {user?.profile?.bio}
+                      </p>
                     </div>
-                    <div className="flex flex-col text-gray-600">
-                      <div className="flex w-fit items-center gap-2 cursor-pointer hover:text-[#8338ec] transition-colors duration-300">
-                        <User2 size={20} />
-                        <Button variant="link">
-                          <Link to="/profile">View Profile</Link>
-                        </Button>
-                      </div>
-                    </div>
+                  </div>
+                  <div className="flex flex-col text-gray-600">
                     <div className="flex w-fit items-center gap-2 cursor-pointer hover:text-[#8338ec] transition-colors duration-300">
-                      <LogOut size={20} />
-                      <Button onClick={logOutHandler} variant="link">
-                        Logout
+                      <User2 size={20} />
+                      <Button variant="link">
+                        <Link to="/profile">View Profile</Link>
                       </Button>
                     </div>
-                  </motion.div>
-                )}
-              </div>
-            </>
+                  </div>
+                  <div className="flex w-fit items-center gap-2 cursor-pointer hover:text-[#8338ec] transition-colors duration-300">
+                    <LogOut size={20} />
+                    <Button onClick={logOutHandler} variant="link">
+                      Logout
+                    </Button>
+                  </div>
+                </motion.div>
+              )}
+            </div>
           )}
         </div>
       </div>

@@ -2,7 +2,7 @@ import React from "react";
 import { Badge } from "./ui/badge";
 import { motion } from "framer-motion";
 
-const LatestJobsCard = () => {
+const LatestJobsCard = ({ job }) => {
   return (
     <motion.div
       className="p-6 rounded-lg shadow-lg bg-gradient-to-br from-purple-50 via-white to-purple-100 border border-gray-200 hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-2"
@@ -18,9 +18,9 @@ const LatestJobsCard = () => {
         className="mb-4"
       >
         <h1 className="font-semibold text-2xl text-gray-800 hover:text-purple-700 transition-all duration-300">
-          Company Name
+          {job?.company?.name}
         </h1>
-        <p className="text-sm text-gray-500">India</p>
+        <p className="text-sm text-gray-500">{job?.location}</p>
       </motion.div>
 
       {/* Job Info */}
@@ -31,12 +31,9 @@ const LatestJobsCard = () => {
         transition={{ duration: 0.6, delay: 0.4 }}
       >
         <h1 className="font-bold text-xl text-gray-900 hover:text-purple-700 transition-all duration-300">
-          Job Title
+          {job?.title}
         </h1>
-        <p className="text-sm text-gray-600 mt-2">
-          An exciting opportunity awaits you to join our team as a Job Title.
-          Apply now and grow with us!
-        </p>
+        <p className="text-sm text-gray-600 mt-2">{job?.description}</p>
       </motion.div>
 
       {/* Badges */}
@@ -47,13 +44,13 @@ const LatestJobsCard = () => {
         transition={{ duration: 0.6, delay: 0.6 }}
       >
         <Badge className="bg-gradient-to-r from-purple-500 to-purple-700 text-white font-bold px-3 py-1 rounded-full transition-all duration-300 hover:scale-110">
-          12 Positions
+          {job?.position} Position
         </Badge>
         <Badge className="bg-gradient-to-r from-blue-500 to-blue-700 text-white font-bold px-3 py-1 rounded-full transition-all duration-300 hover:scale-110">
-          Part Time
+          {job?.jobType}
         </Badge>
         <Badge className="bg-gradient-to-r from-green-500 to-green-700 text-white font-bold px-3 py-1 rounded-full transition-all duration-300 hover:scale-110">
-          2LPA
+          slary : {job?.salary}
         </Badge>
       </motion.div>
 
@@ -64,9 +61,9 @@ const LatestJobsCard = () => {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.6, delay: 0.8 }}
       >
-        <button className="bg-gradient-to-r from-purple-600 to-purple-800 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105">
+        {/* <button className="bg-gradient-to-r from-purple-600 to-purple-800 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105">
           Apply Now
-        </button>
+        </button> */}
       </motion.div>
     </motion.div>
   );

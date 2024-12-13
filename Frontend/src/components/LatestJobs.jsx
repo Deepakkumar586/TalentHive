@@ -1,10 +1,11 @@
 import React from "react";
 import LatestJobsCard from "./LatestJobsCard";
 import { motion } from "framer-motion";
-
-const randomJobs = [1, 2, 3, 4, 5, 6, 7, 8];
+import { useSelector } from "react-redux";
 
 const LatestJobs = () => {
+  const { alljobs } = useSelector((store) => store.alljobs);
+  console.log("Redux job data:", alljobs);
   return (
     <div className="max-w-7xl mx-auto my-20 px-4">
       <motion.h2
@@ -17,9 +18,13 @@ const LatestJobs = () => {
       </motion.h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Map through jobs and render LatestJobsCard */}
-        {randomJobs.slice(0, 6).map((job, index) => (
-          <LatestJobsCard key={index} />
-        ))}
+        {alljobs?.length <= 0 ? (
+          <span>No Job Found</span>
+        ) : (
+          alljobs
+            ?.slice(0, 6)
+            .map((job, index) => <LatestJobsCard key={index} job={job} />)
+        )}
       </div>
     </div>
   );
