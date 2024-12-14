@@ -31,14 +31,14 @@ const JobDescription = () => {
         { withCredentials: true }
       );
       if (response.data.success) {
-        dispatch(setSingleJob(response.data.job));
+        dispatch(setSingleJob(response.data.job)); // Update Redux store with the fetched job
       }
     } catch (err) {
-      console.error(err);
+      console.error("Error fetching job details:", err);
     }
   };
 
-  // Fetch job data when the component loads
+  // Fetch job data when the component loads or when certain dependencies change
   useEffect(() => {
     fetchSingleJob();
   }, [jobId, user?._id, dispatch]);
@@ -54,13 +54,13 @@ const JobDescription = () => {
       );
 
       if (res.data.success) {
-        toast.success(res.data.message); // Show toast before re-fetching
+        toast.success("Successfully applied for the job!"); // Show success message
 
-        // Re-fetch the job data to update the UI
+        // Re-fetch the job data to update the component state
         await fetchSingleJob();
       }
     } catch (err) {
-      console.error(err);
+      console.error("Error applying for job:", err);
       toast.error(
         err.response?.data?.message ||
           "Failed to apply for the job. Please try again."
@@ -119,15 +119,21 @@ const JobDescription = () => {
             transition={{ delay: 0.6, duration: 1 }}
           >
             <Button
-              onClick={isApplied ? null : handleApplyJobNow}
-              disabled={isApplied || isLoading} // Disable button when loading
+              onClick={!user || isApplied ? null : handleApplyJobNow}
+              disabled={!user || isApplied || isLoading} // Disable button if not logged in, already applied, or loading
               className={`mt-4 md:mt-0 rounded-lg text-white ${
-                isApplied || isLoading
+                !user || isApplied || isLoading
                   ? "bg-gray-600 cursor-not-allowed"
                   : "bg-indigo-600 hover:bg-indigo-700"
               }`}
             >
-              {isApplied ? "Already Applied" : isLoading ? "Applying..." : "Apply Now"}
+              {!user
+                ? "You Need To Login And then you can apply job "
+                : isApplied
+                ? "Already Applied"
+                : isLoading
+                ? "Applying..."
+                : "Apply Now"}
             </Button>
           </motion.div>
         </div>

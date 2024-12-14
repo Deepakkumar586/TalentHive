@@ -1,11 +1,11 @@
-import React from "react";
+// import React from "react";
 import Navbar from "./shared/Navbar";
 import FilterJobs from "./FilterJobs";
 import Job from "./Job";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 
-const jobsArray = [1, 2, 3, 4, 5, 6, 7, 8];
+// const jobsArray = [1, 2, 3, 4, 5, 6, 7, 8];
 
 
 

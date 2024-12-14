@@ -4,22 +4,34 @@ const Company = require("../models/company");
 
 exports.registerCompany = async (req, res) => {
   try {
-    const { companyName } = req.body;
-    if (!companyName) {
+    console.log("Request Body:", req.body); // Debug incoming data
+
+    const { companyName, description, website, location } = req.body;
+
+    // Validate request payload
+    if (!companyName || !description || !website || !location) {
       return res.status(400).json({
-        message: "Company name is required.",
+        message:
+          "Missing required fields: companyName, description, website, location",
         success: false,
       });
     }
+
+    // Check if company already exists
     let company = await Company.findOne({ name: companyName });
     if (company) {
       return res.status(400).json({
-        message: "You can't register same company.",
+        message: "You can't register the same company.",
         success: false,
       });
     }
+
+    // Create new company
     company = await Company.create({
       name: companyName,
+      description,
+      website,
+      location,
       userId: req.id,
     });
 
@@ -29,7 +41,11 @@ exports.registerCompany = async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.log(error);
+    console.error("Error registering company:", error);
+    return res.status(500).json({
+      message: "Internal server error.",
+      success: false,
+    });
   }
 };
 
@@ -78,6 +94,7 @@ exports.getCompanyById = async (req, res) => {
 exports.updateCompany = async (req, res) => {
   try {
     const { name, description, website, location } = req.body;
+    console.log(name, description, website, location);
 
     // const file = req.file;
     // idhar cloudinary ayega

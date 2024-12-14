@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Avatar, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
@@ -70,15 +70,28 @@ const Navbar = () => {
           } lg:flex flex-col lg:flex-row items-center gap-8 lg:gap-10 lg:static absolute top-16 left-0 w-full bg-white lg:bg-transparent lg:w-auto lg:p-0 p-6 shadow-lg lg:shadow-none`}
         >
           <ul className="flex flex-col lg:flex-row font-medium items-center gap-6 lg:gap-8">
-            <li className="hover:text-[#8338ec] transition-colors duration-300">
-              <Link to="/">Home</Link>
-            </li>
-            <li className="hover:text-[#8338ec] transition-colors duration-300">
-              <Link to="/jobs">Jobs</Link>
-            </li>
-            <li className="hover:text-[#8338ec] transition-colors duration-300">
-              <Link to="/browse">Browse</Link>
-            </li>
+            {user && user.role === "recruiter" ? (
+              <>
+                <li className="hover:text-[#8338ec] transition-colors duration-300">
+                  <Link to="/admin/companies">Companies</Link>
+                </li>
+                <li className="hover:text-[#8338ec] transition-colors duration-300">
+                  <Link to="/admin/jobs">Jobs</Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li className="hover:text-[#8338ec] transition-colors duration-300">
+                  <Link to="/">Home</Link>
+                </li>
+                <li className="hover:text-[#8338ec] transition-colors duration-300">
+                  <Link to="/jobs">Jobs</Link>
+                </li>
+                <li className="hover:text-[#8338ec] transition-colors duration-300">
+                  <Link to="/browse">Browse</Link>
+                </li>
+              </>
+            )}
           </ul>
 
           {!user ? (
@@ -131,18 +144,23 @@ const Navbar = () => {
                     </Avatar>
                     <div>
                       <h4 className="font-medium">{user?.fullname}</h4>
-                      <p className="text-sm text-muted-foreground">
-                        {user?.profile?.bio}
-                      </p>
+                      {user && user.role === "student" && (
+                        <p className="text-sm text-muted-foreground">
+                          {user?.profile?.bio}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="flex flex-col text-gray-600">
-                    <div className="flex w-fit items-center gap-2 cursor-pointer hover:text-[#8338ec] transition-colors duration-300">
-                      <User2 size={20} />
-                      <Button variant="link">
-                        <Link to="/profile">View Profile</Link>
-                      </Button>
-                    </div>
+                    {user && user.role === "student" && (
+                      <div className="flex w-fit items-center gap-2 cursor-pointer hover:text-[#8338ec] transition-colors duration-300">
+                        <User2 size={20} />
+
+                        <Button variant="link">
+                          <Link to="/profile">View Profile</Link>
+                        </Button>
+                      </div>
+                    )}
                   </div>
                   <div className="flex w-fit items-center gap-2 cursor-pointer hover:text-[#8338ec] transition-colors duration-300">
                     <LogOut size={20} />
