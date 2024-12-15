@@ -4,14 +4,19 @@ import { ArrowLeft, Loader2 } from "lucide-react";
 import Navbar from "../shared/Navbar";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import axios from "axios";
 import { COMPANY_API_END_POINT } from "@/utils/constant";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
+import { useSelector } from "react-redux";
+import useGetCompanyById from "@/customHooks/useGetCompanyById";
 
 const CompanySetup = () => {
+  const params = useParams();
+  useGetCompanyById(params.id);
+  console.log("params id :", params.id);
   const [input, setInput] = useState({
     name: "",
     description: "",
@@ -19,30 +24,32 @@ const CompanySetup = () => {
     location: "",
     file: null,
   });
-  const params = useParams();
+
+  const { singleCompany } = useSelector((store) => store.company);
+  console.log("Single Company", singleCompany);
+
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const handleInputChange = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
-  const changeFileHandler = (e) => {
-    const file = e.target.files?.[0];
-    setInput({ ...input, file });
-  };
-
   // form submit
   const submitHandler = async (e) => {
     e.preventDefault();
-    // submit form to server
     const formData = new FormData();
     formData.append("name", input.name);
     formData.append("description", input.description);
     formData.append("website", input.website);
     formData.append("location", input.location);
+
     if (input.file) {
+      console.log("File selected:", input.file); // Log file details
       formData.append("file", input.file);
+    } else {
+      console.log("No file selected!");
     }
+
     try {
       setLoading(true);
       const res = await axios.patch(
@@ -59,18 +66,31 @@ const CompanySetup = () => {
         toast.success(res.data.message);
         navigate("/admin/companies");
       }
-    } catch (e) {
-      console.error(e);
+    } catch (error) {
+      console.error("Error Response:", error.response?.data || error.message);
       toast.error("Error updating company details");
     } finally {
       setLoading(false);
     }
   };
+
+  // update the compnay details with field data
+  useEffect(() => {
+    setInput({
+      name: singleCompany?.name || "",
+      description: singleCompany?.description || "",
+      website: singleCompany?.website || "",
+      location: singleCompany?.location || "",
+      file: singleCompany?.file || null,
+    });
+  }, [singleCompany]);
   return (
     <div>
       <Navbar />
       <div className="max-w-xl mx-auto my-10 mt-28">
-        <form onSubmit={submitHandler}>
+        <form
+        // onSubmit={submitHandler}
+        >
           <div className="flex items-center gap-4 p-8">
             <Button
               onClick={() => navigate("/admin/companies")}
@@ -125,13 +145,11 @@ const CompanySetup = () => {
             </div>
             <div>
               <Label>Logo</Label>
-              <Input
+              <input
                 type="file"
-                accept="image/*"
-                name="file"
-                // value={input.file}
-                oonChange={changeFileHandler}
-                placeholder="Logo here"
+                onChange={(e) =>
+                  setInput({ ...input, file: e.target.files[0] })
+                }
               />
             </div>
           </div>
@@ -146,7 +164,7 @@ const CompanySetup = () => {
           ) : (
             <Button
               type="submit"
-              // onClick={loginHandler}
+              onClick={submitHandler}
               className="w-full py-2 text-white bg-gray-800 rounded-md"
             >
               Update

@@ -1,4 +1,6 @@
 const Company = require("../models/company");
+const getDataUri = require("../utils/dataUri");
+const cloudinary = require("../utils/cloudinary");
 
 // const Company = require("../models/company"); // Ensure the correct model import
 
@@ -53,16 +55,16 @@ exports.getCompany = async (req, res) => {
   try {
     const userId = req.id; // logged in user id
     console.log(userId);
-    const company = await Company.find({ userId });
-    console.log("company : ", company);
-    if (company.length == 0) {
+    const companies = await Company.find({ userId });
+    console.log("companies : ", companies);
+    if (companies.length == 0) {
       return res.status(404).json({
         message: "Companies not found.",
         success: false,
       });
     }
     res.status(200).json({
-      company,
+      companies,
       success: true,
     });
   } catch (error) {
@@ -93,16 +95,23 @@ exports.getCompanyById = async (req, res) => {
 // update company info
 exports.updateCompany = async (req, res) => {
   try {
+    // console.log("req.file:", req.file); // Log the file object
+    // console.log("req.body:", req.body); // Log the body data
+
     const { name, description, website, location } = req.body;
-    console.log(name, description, website, location);
 
-    // const file = req.file;
-    // idhar cloudinary ayega
-    // const fileUri = getDataUri(file);
-    // const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
-    // const logo = cloudResponse.secure_url;
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "File not uploaded. Please provide a valid file.",
+      });
+    }
 
-    const updateData = { name, description, website, location };
+    const fileUri = getDataUri(req.file); // This is where the error occurs
+    const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
+    const logo = cloudResponse.secure_url;
+
+    const updateData = { name, description, website, location, logo };
 
     const company = await Company.findByIdAndUpdate(req.params.id, updateData, {
       new: true,
@@ -114,11 +123,14 @@ exports.updateCompany = async (req, res) => {
         success: false,
       });
     }
+
     return res.status(200).json({
       message: "Company information updated.",
+      company,
       success: true,
     });
   } catch (error) {
-    console.log(error);
+    console.error("Error in updateCompany:", error);
+    res.status(500).json({ message: "Server error", error });
   }
 };

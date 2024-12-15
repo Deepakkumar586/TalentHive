@@ -137,20 +137,23 @@ exports.getJobByIdStudent = async (req, res) => {
 exports.getAllJobsForAdmin = async (req, res) => {
   try {
     const adminId = req.id;
-    const jobs = await Job.find({ created_by: adminId });
+    const jobs = await Job.find({ created_by: adminId }).populate({
+      path: "company",
+      select: "name",
+      createdAt:-1
+      
+    })
 
     if (!jobs) {
-      return res
-        .status(404)
-        .json({
-          message: "sorry, you have not created any jobz",
-          success: false,
-        });
+      return res.status(404).json({
+        message: "sorry, you have not created any jobz",
+        success: false,
+      });
     }
     res.json({
       message: "Jobs fetched successfully",
       success: true,
-      jobs: jobs,
+      jobs,
     });
   } catch (err) {
     res.status(500).json({ message: "Job Fetching error" });
