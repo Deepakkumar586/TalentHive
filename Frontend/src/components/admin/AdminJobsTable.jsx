@@ -26,7 +26,12 @@ const AdminJobsTable = () => {
         if (!searchJobByText) {
           return true;
         }
-        return job?.name?.toLowerCase().includes(searchJobByText.toLowerCase());
+        return (
+          job?.title?.toLowerCase().includes(searchJobByText.toLowerCase()) ||
+          job?.company?.name
+            .toLowerCase()
+            .includes(searchJobByText.toLowerCase())
+        );
       });
     setFilterJobs(filteredJobs);
   }, [allAdminJobs, searchJobByText]);
@@ -47,7 +52,8 @@ const AdminJobsTable = () => {
         <TableBody>
           {filterJobs?.map((job, index) => (
             <tr key={index}>
-              <TableCell>{job.name}</TableCell>
+              <TableCell>{job?.company?.name}</TableCell>
+              <TableCell>{job?.title}</TableCell>
               <TableCell>{job.createdAt.split("T")[0]}</TableCell>
               <TableCell className="text-right cursor-pointer">
                 <Popover>

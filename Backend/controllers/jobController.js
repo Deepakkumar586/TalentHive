@@ -78,7 +78,7 @@ exports.getAllJobStudent = async (req, res) => {
     const jobs = await Job.find(query)
       .populate({
         path: "company",
-        select: "name",
+        select: "name logo",
       })
       .sort({
         createdAt: -1,
@@ -140,9 +140,8 @@ exports.getAllJobsForAdmin = async (req, res) => {
     const jobs = await Job.find({ created_by: adminId }).populate({
       path: "company",
       select: "name",
-      createdAt:-1
-      
-    })
+      createdAt: -1,
+    });
 
     if (!jobs) {
       return res.status(404).json({
