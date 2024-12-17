@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "./ui/carousel";
 import { Button } from "./ui/button";
 import { Loader2 } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setStudentSearchJob } from "@/redux/JobSlice";
 
 const category = [
   "Frontend Developer",
@@ -15,6 +24,13 @@ const category = [
 
 const CategoryCarousel = () => {
   const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const searchJobHandler = (query) => {
+    dispatch(setStudentSearchJob(query));
+    navigate(`/browse`);
+  };
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -60,6 +76,7 @@ const CategoryCarousel = () => {
                     transition={{ duration: 0.3 }}
                   >
                     <Button
+                      onClick={() => searchJobHandler(cat)}
                       className="w-full rounded-full border-purple-400 text-purple-600 hover:bg-purple-500 hover:text-white transition-all"
                       variant="outline"
                     >

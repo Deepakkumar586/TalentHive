@@ -50,7 +50,7 @@ const LatestJobsCard = ({ job }) => {
           {job?.jobType}
         </Badge>
         <Badge className="bg-gradient-to-r from-green-500 to-green-700 text-white font-bold px-3 py-1 rounded-full transition-all duration-300 hover:scale-110">
-          slary : {job?.salary}
+          salary : {job?.salary} LPA
         </Badge>
       </motion.div>
 

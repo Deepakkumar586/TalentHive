@@ -12,6 +12,7 @@ import CreateCompany from "./components/admin/CreateCompany";
 import CompanySetup from "./components/admin/CompanySetup";
 import AdminJobs from "./components/admin/AdminJobs";
 import PostJobs from "./components/admin/PostJobs";
+import Applicants from "./components/admin/Applicants";
 
 // student routes
 const appRouter = createBrowserRouter([
@@ -64,6 +65,10 @@ const appRouter = createBrowserRouter([
   {
     path: "/admin/create/jobs",
     element: <PostJobs />,
+  },
+  {
+    path: "/admin/jobs/:id/applicants",
+    element: <Applicants />,
   },
 ]);
 

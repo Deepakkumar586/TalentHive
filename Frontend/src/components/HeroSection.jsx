@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "./ui/button";
 import { Search } from "lucide-react";
+import { useDispatch } from "react-redux";
+import { setStudentSearchJob } from "@/redux/JobSlice";
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
+  const [query, setQuery] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const searchJobHandler = () => {
+    dispatch(setStudentSearchJob(query));
+    navigate(`/browse`);
+  };
   return (
     <motion.div
       className="text-center mx-6 my-10 md:mx-20 lg:mx-32"
@@ -57,9 +68,11 @@ const HeroSection = () => {
           <input
             type="text"
             placeholder="Find your dream job"
+            onChange={(e) => setQuery(e.target.value)}
             className="outline-none border-none w-full text-gray-700 px-2 py-3 rounded-l-full focus:ring-2 focus:ring-purple-500"
           />
           <Button
+            onClick={searchJobHandler}
             className="rounded-r-full bg-gradient-to-r from-purple-500 to-indigo-500 text-white px-4 py-3 flex items-center gap-2 hover:from-purple-700 hover:to-indigo-700 transition-all"
           >
             <Search className="h-5 w-5" />

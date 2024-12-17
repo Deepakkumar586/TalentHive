@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import Navbar from "./shared/Navbar";
 import { Avatar, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
@@ -9,11 +8,13 @@ import AppliedJob from "./AppliedJob";
 import { motion } from "framer-motion";
 import UpdateProfileDialog from "./UpdateProfileDialog";
 import { useSelector } from "react-redux";
-import { use } from "react";
+import useGetAppliedJobs from "@/customHooks/useGetAppliedJobs";
+import { useEffect, useState } from "react";
 
 // const skills = ["HTML", "CSS", "JavaScript", "Java"];
 
 const Profile = () => {
+  useGetAppliedJobs();
   const [open, setOpen] = useState(false);
   const { user } = useSelector((store) => store.user);
   const [localUser, setLocalUser] = useState(user);
