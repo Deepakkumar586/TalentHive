@@ -5,6 +5,7 @@ import Job from "./Job";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import Footer from "./Footer";
 
 // const jobsArray = [1, 2, 3, 4, 5, 6, 7, 8];
 
@@ -61,7 +62,7 @@ const Jobs = () => {
                     key={index}
                     initial={{ x: 100, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
-                    exit={{opacity: 0,x:-100}}
+                    exit={{ opacity: 0, x: -100 }}
                     transition={{ duration: 0.7, delay: index * 0.1 }}
                   >
                     <Job job={job} />
@@ -72,6 +73,7 @@ const Jobs = () => {
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

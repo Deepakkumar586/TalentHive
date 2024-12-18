@@ -11,6 +11,8 @@ import { Loader2 } from "lucide-react";
 import { setLoading } from "@/redux/userSlice";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import Footer from "../Footer";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"; // Import the eye icons
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -24,6 +26,10 @@ const ResetPassword = () => {
     confirmNewPassword: "",
     otp: "",
   });
+  
+  // State to toggle password visibility
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Handle input changes
   const changeEventHandler = (event) => {
@@ -82,7 +88,7 @@ const ResetPassword = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <div className="flex flex-grow items-center justify-center p-4">
+      <div className="flex flex-grow items-center justify-center mt-14 p-4">
         <motion.div
           className="w-full max-w-md bg-white shadow-lg rounded-xl p-8 space-y-6"
           initial={{ opacity: 0, y: 50 }}
@@ -121,10 +127,10 @@ const ResetPassword = () => {
           </div>
 
           {/* New Password Input */}
-          <div>
+          <div className="relative">
             <Label className="block mb-2 text-gray-600">New Password</Label>
             <Input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Your New password"
               name="newPassword"
               value={input.newPassword}
@@ -132,15 +138,26 @@ const ResetPassword = () => {
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:outline-none transition-all"
               required
             />
+            {/* Show/Hide password toggle */}
+            <div
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute right-4 top-8 cursor-pointer text-gray-500"
+            >
+              {showPassword ? (
+                <AiOutlineEyeInvisible fontSize={20} />
+              ) : (
+                <AiOutlineEye fontSize={20} />
+              )}
+            </div>
           </div>
 
           {/* Confirm New Password Input */}
-          <div>
+          <div className="relative">
             <Label className="block mb-2 text-gray-600">
               Confirm New Password
             </Label>
             <Input
-              type="password"
+              type={showConfirmPassword ? "text" : "password"}
               placeholder="Confirm new password"
               name="confirmNewPassword"
               value={input.confirmNewPassword}
@@ -148,6 +165,17 @@ const ResetPassword = () => {
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:outline-none transition-all"
               required
             />
+            {/* Show/Hide password toggle */}
+            <div
+              onClick={() => setShowConfirmPassword((prev) => !prev)}
+              className="absolute right-4 top-8 cursor-pointer text-gray-500"
+            >
+              {showConfirmPassword ? (
+                <AiOutlineEyeInvisible fontSize={20} />
+              ) : (
+                <AiOutlineEye fontSize={20} />
+              )}
+            </div>
           </div>
 
           {/* Submit Button */}
@@ -170,6 +198,7 @@ const ResetPassword = () => {
           )}
         </motion.div>
       </div>
+      <Footer />
     </div>
   );
 };

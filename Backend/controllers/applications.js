@@ -159,7 +159,7 @@ exports.updateApplicationStatus = async (req, res) => {
     await application.save(); // Save the changes
 
     res.json({
-      message: `Application with status updated successfully`,
+      message: `Application with ${status} updated successfully`,
       success: true,
       application,
     });

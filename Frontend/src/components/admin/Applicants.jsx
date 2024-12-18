@@ -19,10 +19,8 @@ const Applicants = () => {
     const fetchAllApplicants = async () => {
       try {
         const res = await axios.get(
-          APPLICATION_API_END_POINT + `/getApplicants/${params.id}`,
-          {
-            withCredentials: true,
-          }
+          `${APPLICATION_API_END_POINT}/getApplicants/${params.id}`,
+          { withCredentials: true }
         );
         dispatch(setApplicants(res.data.applications));
       } catch (err) {
@@ -34,18 +32,24 @@ const Applicants = () => {
   }, [params.id, dispatch]);
 
   return (
-    <div className="bg-purple-50 min-h-screen flex flex-col animate__animated animate__fadeIn animate__faster">
+    <div className="flex flex-col min-h-screen bg-gray-50">
+      {/* Navbar */}
       <Navbar />
-      <div className="max-w-7xl mx-auto mt-28 px-6 sm:px-8 lg:px-10 flex-1">
-        <div className="bg-white shadow-xl rounded-lg p-6 mb-8 transform hover:scale-105 transition-transform duration-300">
-          <h1 className="text-3xl font-bold text-purple-600 mb-6">
-            Applicants ({applicants?.applications?.length})
+
+      {/* Main Content */}
+      <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 mt-8">
+        <div className="bg-white shadow-lg mt-16 rounded-lg p-6">
+          <h1 className="text-3xl font-semibold text-purple-700 mb-6 text-center md:text-left">
+            Applicants ({applicants?.applications?.length || 0})
           </h1>
-          <ApplicantsTable />
+          <div className="overflow-x-auto">
+            <ApplicantsTable />
+          </div>
         </div>
-      </div>
-      {/* Footer fixed at the bottom */}
-      <Footer className="mt-auto bg-purple-600 text-white py-4" />
+      </main>
+
+      {/* Footer */}
+      <Footer className="bg-purple-600 text-white py-4 mt-auto" />
     </div>
   );
 };

@@ -20,11 +20,14 @@ const AdminJobs = () => {
   }, [searchTerm, dispatch]);
 
   return (
-    <div className="bg-purple-50 min-h-screen font-sans">
+    <div className="bg-purple-50 min-h-screen flex flex-col font-sans">
+      {/* Navbar */}
       <Navbar />
-      <div className="max-w-7xl mx-auto my-10 mt-28 px-4 sm:px-6 lg:px-8">
+
+      {/* Content */}
+      <main className="flex-grow max-w-7xl mx-auto my-10 mt-28 px-4 sm:px-6 lg:px-8">
         {/* Search Section */}
-        <div className="flex items-center justify-between my-8 space-x-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 my-8">
           <Input
             className="w-full sm:w-2/3 lg:w-1/2 p-4 rounded-lg border border-purple-300 focus:ring-2 focus:ring-purple-500 shadow-md transition-all"
             placeholder="Filter by name, role"
@@ -42,7 +45,9 @@ const AdminJobs = () => {
         <div className="bg-white shadow-lg rounded-lg overflow-hidden">
           <AdminJobsTable />
         </div>
-      </div>
+      </main>
+
+      {/* Footer */}
       <Footer />
     </div>
   );

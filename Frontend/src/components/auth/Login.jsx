@@ -12,6 +12,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Loader2 } from "lucide-react";
 import { setLoading, setUser } from "@/redux/userSlice";
 import { motion } from "framer-motion";
+import Footer from "../Footer";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 const Login = () => {
   const { user } = useSelector((state) => state.user);
@@ -23,6 +25,7 @@ const Login = () => {
     password: "",
     role: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const changeEventHandler = (event) => {
     const { name, value } = event.target;
@@ -60,12 +63,12 @@ const Login = () => {
     if (user) {
       navigate("/");
     }
-  }, []);
+  }, [user, navigate]);
 
   return (
-    <div className="min-h-screen  flex flex-col">
+    <div className="min-h-screen flex flex-col">
       <Navbar />
-      <div className="flex flex-grow items-center justify-center p-4">
+      <div className="flex flex-grow items-center justify-center mt-20 px-4">
         <motion.div
           className="w-full max-w-md bg-white shadow-lg rounded-xl p-8 space-y-6"
           initial={{ opacity: 0, y: 50 }}
@@ -91,10 +94,10 @@ const Login = () => {
           </div>
 
           {/* Password Input */}
-          <div>
+          <div className="relative">
             <Label className="block mb-2 text-gray-600">Password</Label>
             <Input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Your password"
               name="password"
               value={input.password}
@@ -102,6 +105,16 @@ const Login = () => {
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:outline-none transition-all"
               required
             />
+            <div
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute right-4 top-8 cursor-pointer text-gray-500"
+            >
+              {showPassword ? (
+                <AiOutlineEyeInvisible fontSize={20} />
+              ) : (
+                <AiOutlineEye fontSize={20} />
+              )}
+            </div>
           </div>
 
           {/* Role Selection */}
@@ -156,7 +169,7 @@ const Login = () => {
 
           <Link to="/ForgotPassword">
             <span className="text-purple-500 cursor-pointer mt-10 underline">
-              Forgot Password
+              Forgot Password?
             </span>
           </Link>
 
@@ -172,6 +185,7 @@ const Login = () => {
           </p>
         </motion.div>
       </div>
+      <Footer />
     </div>
   );
 };

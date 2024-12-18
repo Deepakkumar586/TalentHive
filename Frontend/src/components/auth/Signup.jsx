@@ -12,6 +12,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setLoading } from "@/redux/userSlice";
 import { Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
+import Footer from "../Footer";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -25,6 +27,8 @@ const Signup = () => {
     role: "",
     file: null,
   });
+
+  const [showPassword, setShowPassword] = useState(false);
 
   const changeEventHandler = (event) => {
     setInput({ ...input, [event.target.name]: event.target.value });
@@ -80,18 +84,19 @@ const Signup = () => {
       navigate("/");
     }
   }, []);
+
   return (
     <div className=" min-h-screen flex flex-col">
       <Navbar />
       <motion.div
-        className="flex items-center justify-center flex-grow"
+        className="flex items-center justify-center mt-20 flex-grow"
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
         <form
           onSubmit={signUpHandler}
-          className="w-full max-w-md bg-white shadow-2xl rounded-lg p-6 space-y-3"
+          className="w-full max-w-md bg-white shadow-2xl mb-10 rounded-lg p-6 space-y-3"
         >
           <motion.h1
             className="font-bold text-2xl text-center text-purple-700"
@@ -130,12 +135,12 @@ const Signup = () => {
               required
             />
           </div>
-          <div>
+          <div className="relative">
             <Label className="block mb-2 font-medium text-gray-700">
               Password
             </Label>
             <Input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               name="password"
               value={input.password}
@@ -143,6 +148,16 @@ const Signup = () => {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-purple-600 focus:border-purple-600"
               required
             />
+            <span
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute right-3 top-[30px] z-[10] cursor-pointer"
+            >
+              {showPassword ? (
+                <AiOutlineEyeInvisible fontSize={24} fill="#AFB2BF" />
+              ) : (
+                <AiOutlineEye fontSize={24} fill="#AFB2BF" />
+              )}
+            </span>
           </div>
 
           <div className="space-y-4">
@@ -209,7 +224,6 @@ const Signup = () => {
               Signup
             </Button>
           )}
-          
 
           <p className="text-center text-gray-700 mt-4">
             Already Have an Account?{" "}
@@ -222,6 +236,7 @@ const Signup = () => {
           </p>
         </form>
       </motion.div>
+      <Footer />
     </div>
   );
 };

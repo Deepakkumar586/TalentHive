@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Loader2 } from "lucide-react";
 import { setLoading } from "@/redux/userSlice";
 import { motion } from "framer-motion";
+import Footer from "../Footer";
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
@@ -59,7 +60,7 @@ const ForgotPassword = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <div className="flex flex-grow items-center justify-center p-4">
+      <div className="flex mt-6 flex-grow items-center justify-center p-4">
         <motion.div
           className="w-full max-w-md bg-white shadow-lg rounded-xl p-8 space-y-6"
           initial={{ opacity: 0, y: 50 }}
@@ -115,6 +116,7 @@ const ForgotPassword = () => {
           </p>
         </motion.div>
       </div>
+      <Footer />
     </div>
   );
 };
