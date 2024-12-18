@@ -4,8 +4,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon Backend/server.js",
-    "build":"npm install &&  npm install --prefix Frontend && npm run build --prefix Frontend",
-    "start":"nodemon Backend/server.js"
+    "build": "cd Frontend && npm install && npm run build",
+    "start": "node Backend/server.js"
   },
   "author": "",
   "license": "ISC",
