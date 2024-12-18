@@ -57,10 +57,10 @@ const CreateCompany = () => {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className=" min-h-screen">
       <Navbar />
-      <div className="flex justify-center items-center mt-14 mb-[-60px] py-7">
-        <div className="bg-white shadow-lg rounded-xl p-8 max-w-lg w-full">
+      <div className="flex justify-center items-center mt-14 py-6">
+        <div className="bg-white shadow-lg rounded-xl p-8 w-full max-w-screen-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl overflow-auto">
           <h1 className="text-3xl font-bold text-center text-purple-600 mb-6">
             Create Your Company
           </h1>
@@ -77,7 +77,7 @@ const CreateCompany = () => {
                   setCompany({ ...company, companyName: e.target.value })
                 }
                 placeholder="e.g., ABC Corp"
-                className="mt-1 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-300"
+                className="mt-1 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-300 w-full"
               />
             </div>
 
@@ -92,7 +92,7 @@ const CreateCompany = () => {
                   setCompany({ ...company, description: e.target.value })
                 }
                 placeholder="Describe your company"
-                className="mt-1 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-300"
+                className="mt-1 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-300 w-full"
                 required
               />
             </div>
@@ -108,7 +108,7 @@ const CreateCompany = () => {
                   setCompany({ ...company, website: e.target.value })
                 }
                 placeholder="e.g., https://www.company.com"
-                className="mt-1 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-300"
+                className="mt-1 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-300 w-full"
                 required
               />
             </div>
@@ -124,7 +124,7 @@ const CreateCompany = () => {
                   setCompany({ ...company, location: e.target.value })
                 }
                 placeholder="e.g., New York, USA"
-                className="mt-1 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-300"
+                className="mt-1 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-300 w-full"
                 required
               />
             </div>

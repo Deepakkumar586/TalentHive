@@ -21,13 +21,13 @@ const Companies = () => {
   }, [searchTerm, dispatch]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white flex flex-col">
+    <div className=" flex flex-col">
       {/* Navbar */}
       <Navbar />
 
       {/* Header and Search */}
       <motion.div
-        className="max-w-7xl mx-auto mt-20 px-6 py-4"
+        className="max-w-7xl mx-auto mt-24 px-6 py-4"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
@@ -63,7 +63,7 @@ const Companies = () => {
 
         {/* Table */}
         <motion.div
-          className="bg-white shadow-xl rounded-lg overflow-hidden"
+          className="bg-white shadow-xl rounded-lg overflow-hidden flex-grow"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.8 }}

@@ -51,79 +51,70 @@ const CompaniesTable = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
     >
-      <Table className="w-full">
-        <TableCaption className="text-purple-500  text-sm italic">
-          Your Registered Companies
-        </TableCaption>
+      <div className="overflow-x-auto">
+        <Table className="w-full">
+          <TableCaption className="text-purple-500    mb-7 text-sm italic">
+            Your Registered Companies
+          </TableCaption>
 
-        {/* Table Header */}
-        <TableHeader>
-          <TableRow className="border-b">
-            <TableHead className="text-purple-700 font-semibold">
-              Logo
-            </TableHead>
-            <TableHead className="text-purple-700 font-semibold">
-              Name
-            </TableHead>
-            <TableHead className="text-purple-700 font-semibold">
-              Date
-            </TableHead>
-            <TableHead className="text-right text-purple-700 font-semibold">
-              Action
-            </TableHead>
-          </TableRow>
-        </TableHeader>
+          {/* Table Header */}
+          <TableHeader>
+            <TableRow className="border-b">
+              <TableHead className="text-purple-700 font-semibold">Logo</TableHead>
+              <TableHead className="text-purple-700 font-semibold">Name</TableHead>
+              <TableHead className="text-purple-700 font-semibold">Date</TableHead>
+              <TableHead className="text-right text-purple-700 font-semibold">Action</TableHead>
+            </TableRow>
+          </TableHeader>
 
-        {/* Table Body */}
-        <TableBody>
-          {filterCompany?.map((company, index) => (
-            <motion.tr
-              key={index}
-              variants={tableRowVariants}
-              custom={index}
-              initial="hidden"
-              animate="visible"
-              className="hover:bg-gray-100 transition-all duration-300 cursor-pointer border-b last:border-none"
-            >
-              <TableCell className="p-3">
-                <Avatar className="w-9 h-9">
-                  <AvatarImage
-                    src={company?.logo}
-                    alt="Company Logo"
-                    className="rounded-full"
-                  />
-                </Avatar>
-              </TableCell>
-              <TableCell className="text-gray-700 font-medium">
-                {company.name}
-              </TableCell>
-              <TableCell className="text-gray-500">
-                {company.createdAt.split("T")[0]}
-              </TableCell>
-              <TableCell className="text-right">
-                <Popover>
-                  <PopoverTrigger>
-                    <MoreHorizontal className="text-gray-500 hover:text-purple-600 transition-all duration-200" />
-                  </PopoverTrigger>
-                  <PopoverContent className="w-36 bg-white shadow-md rounded-lg">
-                    <div
-                      onClick={() =>
-                        navigate(`/admin/companies/${company._id}`)
-                      }
-                      className="flex items-center gap-2 p-2 text-gray-700 hover:text-purple-600 hover:bg-gray-50 rounded-md transition-all"
-                    >
-                      <Edit2 size={16} />
-                      <span>Edit</span>
-                    </div>
-                  </PopoverContent>
-                </Popover>
-              </TableCell>
-            </motion.tr>
-          ))}
-        </TableBody>
-      </Table>
+          {/* Table Body */}
+          <TableBody>
+            {filterCompany?.map((company, index) => (
+              <motion.tr
+                key={index}
+                variants={tableRowVariants}
+                custom={index}
+                initial="hidden"
+                animate="visible"
+                className="hover:bg-gray-100 transition-all duration-300 cursor-pointer border-b last:border-none"
+              >
+                <TableCell className="p-3">
+                  <Avatar className="w-9 h-9">
+                    <AvatarImage
+                      src={company?.logo}
+                      alt="Company Logo"
+                      className="rounded-full"
+                    />
+                  </Avatar>
+                </TableCell>
+                <TableCell className="text-gray-700 font-medium">{company.name}</TableCell>
+                <TableCell className="text-gray-500">{company.createdAt.split("T")[0]}</TableCell>
+                <TableCell className="text-right">
+                  <Popover>
+                    <PopoverTrigger>
+                      <MoreHorizontal className="text-gray-500 hover:text-purple-600 transition-all duration-200" />
+                    </PopoverTrigger>
+                    <PopoverContent className="w-36 bg-white shadow-md rounded-lg">
+                      <div
+                        onClick={() =>
+                          navigate(`/admin/companies/${company._id}`)
+                        }
+                        className="flex items-center gap-2 p-2 text-gray-700 hover:text-purple-600 hover:bg-gray-50 rounded-md transition-all"
+                      >
+                        <Edit2 size={16} />
+                        <span>Edit</span>
+                      </div>
+                    </PopoverContent>
+                  </Popover>
+                </TableCell>
+              </motion.tr>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </motion.div>
   );
 };
+
 
 export default CompaniesTable;

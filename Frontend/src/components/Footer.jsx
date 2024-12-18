@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const Footer = () => {
   return (
     <motion.div
-      className="bg-[#2D2D2D] text-white  bottom-0 left-0 w-full py-8"
+      className="bg-[#2D2D2D] text-white py-8 mt-20"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}
@@ -51,6 +51,14 @@ const Footer = () => {
                   <Link to="/browse">Browse</Link>
                 </p>
               </li>
+              <li>
+                {/* <a
+                  href="#contact"
+                  className="hover:text-[#8338ec] transition-all duration-300"
+                >
+                  Contact
+                </a> */}
+              </li>
             </ul>
           </motion.div>
 
@@ -61,11 +69,13 @@ const Footer = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <h3 className="font-semibold text-lg">Contact</h3>
-            <p className="text-sm text-gray-400 hover:text-[#8338ec]">
+            <h3 className="font-semibold text-lg hover:text-[#8338ec] cursor-pointer">
+              Contact
+            </h3>
+            <p className="text-sm text-gray-400 hover:text-[#8338ec] cursor-pointer">
               Email: aryanrajj1234@gmail.com
             </p>
-            <p className="text-sm text-gray-400 hover:text-[#8338ec]">
+            <p className="text-sm text-gray-400 hover:text-[#8338ec] cursor-pointer">
               Phone: +91 6392862240
             </p>
           </motion.div>
@@ -84,6 +94,7 @@ const Footer = () => {
                 className="text-gray-400 hover:text-[#8338ec] transition-all duration-300"
               >
                 <LucideIcons.Twitter size={24} />
+                {/* <LucideIcons.X size={24} /> */}
               </a>
               <a
                 href="https://www.linkedin.com/in/deepak-kumar-41bab6221/"
@@ -109,7 +120,7 @@ const Footer = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.8 }}
           >
-            &copy; 2024 TalentHive. All Rights Reserved.
+            &copy; 2024 JobPortal. All Rights Reserved.
           </motion.p>
         </div>
       </div>

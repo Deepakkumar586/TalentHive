@@ -68,7 +68,7 @@ const Login = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <div className="flex flex-grow items-center justify-center mt-20 px-4">
+      <div className="flex flex-grow items-center mb-6 justify-center mt-20 px-4">
         <motion.div
           className="w-full max-w-md bg-white shadow-lg rounded-xl p-8 space-y-6"
           initial={{ opacity: 0, y: 50 }}

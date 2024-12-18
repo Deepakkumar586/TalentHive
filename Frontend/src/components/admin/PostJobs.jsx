@@ -67,12 +67,12 @@ const PostJobs = () => {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen">
+    <div className="bg-gray-100 min-h-screen flex flex-col">
       <Navbar />
-      <div className="flex justify-center items-center mt-14 mb-[-60px] py-7">
+      <div className="flex justify-center items-center mt-14 mb-10 py-7 flex-grow">
         <form
           onSubmit={submitHandler}
-          className="w-full max-w-xl bg-white shadow-lg rounded-xl p-8 space-y-6"
+          className="w-full max-w-xl bg-white shadow-lg rounded-xl p-6 space-y-4"
           style={{
             boxShadow: "0px 4px 10px rgba(128, 0, 128, 0.3)",
           }}
