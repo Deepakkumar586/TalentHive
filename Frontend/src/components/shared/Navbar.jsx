@@ -49,7 +49,7 @@ const Navbar = () => {
         {/* Logo */}
         <div className="cursor-pointer">
           <h1 className="text-2xl font-bold text-[#8338ec] hover:text-[#3f0294] transition-colors duration-300">
-            Talent<span className="text-[#8338ec]">Hive</span>
+          Talent<span className="text-[#8338ec]">Hive</span>
           </h1>
         </div>
 
@@ -138,7 +138,7 @@ const Navbar = () => {
                   <div className="flex gap-4 space-y-2">
                     <Avatar>
                       <AvatarImage
-                        src={user?.profile?.profilePhoto}
+                        src={user?.profile?.profilePhoto || 'https://github.com/shadcn.png'}
                         alt="User Avatar"
                       />
                     </Avatar>

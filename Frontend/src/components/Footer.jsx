@@ -1,6 +1,6 @@
-import React from "react";
 import { motion } from "framer-motion";
 import * as LucideIcons from "lucide-react"; // Import all icons
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
@@ -37,36 +37,27 @@ const Footer = () => {
             <h3 className="font-semibold text-lg">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <a
-                  href="#home"
-                  className="hover:text-[#8338ec] transition-all duration-300"
-                >
-                  Home
-                </a>
+                <p className="hover:text-[#8338ec] transition-all duration-300">
+                  <Link to="/">Home</Link>
+                </p>
               </li>
               <li>
-                <a
-                  href="#about"
-                  className="hover:text-[#8338ec] transition-all duration-300"
-                >
-                  About
-                </a>
+                <p className="hover:text-[#8338ec] transition-all duration-300">
+                  <Link to="/jobs">Jobs</Link>
+                </p>
               </li>
               <li>
-                <a
-                  href="#jobs"
-                  className="hover:text-[#8338ec] transition-all duration-300"
-                >
-                  Jobs
-                </a>
+                <p className="hover:text-[#8338ec] transition-all duration-300">
+                  <Link to="/browse">Browse</Link>
+                </p>
               </li>
               <li>
-                <a
+                {/* <a
                   href="#contact"
                   className="hover:text-[#8338ec] transition-all duration-300"
                 >
                   Contact
-                </a>
+                </a> */}
               </li>
             </ul>
           </motion.div>
