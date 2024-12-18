@@ -1,5 +1,5 @@
 import Navbar from "./shared/Navbar";
-import Job from "./job";
+import Job from "./job.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { setStudentSearchJob } from "@/redux/JobSlice";
