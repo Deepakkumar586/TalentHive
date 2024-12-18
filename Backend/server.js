@@ -26,7 +26,7 @@ app.use("/api/user", userRouter);
 
 app.use("/api/company", companyRouter);
 
-// all job api
+// all job 
 
 app.use("/api/job", jobRouter);
 

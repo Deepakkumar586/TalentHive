@@ -10,13 +10,32 @@ import { setSingleJob } from "@/redux/JobSlice";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
+// Loading Spinner component
+const LoadingSpinner = () => (
+  <div className="flex justify-center items-center mt-4">
+    <svg
+      className="animate-spin h-8 w-8 border-t-4 border-blue-500 rounded-full"
+      viewBox="0 0 24 24"
+    >
+      <circle
+        cx="12"
+        cy="12"
+        r="10"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="4"
+      ></circle>
+    </svg>
+  </div>
+);
+
 const JobDescription = () => {
   const params = useParams();
   const jobId = params.id;
   const { singleJob } = useSelector((store) => store.alljobs);
   const { user } = useSelector((store) => store.user);
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(false); // Local loading state
+  const [isLoading, setIsLoading] = useState(false); // Local loading state for job application
 
   // Check if the user has already applied for the job
   const isApplied = singleJob?.applications?.some(
@@ -25,6 +44,7 @@ const JobDescription = () => {
 
   // Fetch single job data
   const fetchSingleJob = async () => {
+    setIsLoading(true); // Show spinner while fetching
     try {
       const response = await axios.get(
         `${JOB_API_END_POINT}/student/get/job/${jobId}`,
@@ -35,6 +55,8 @@ const JobDescription = () => {
       }
     } catch (err) {
       console.error("Error fetching job details:", err);
+    } finally {
+      setIsLoading(false); // Hide spinner after fetching is done
     }
   };
 
@@ -45,7 +67,7 @@ const JobDescription = () => {
 
   // Handle Apply Job
   const handleApplyJobNow = async () => {
-    setIsLoading(true); // Start loading
+    setIsLoading(true); // Start loading when applying
     try {
       const res = await axios.post(
         `${APPLICATION_API_END_POINT}/applyJobs/${jobId}`,
@@ -53,11 +75,14 @@ const JobDescription = () => {
         { withCredentials: true }
       );
 
+      console.log("Apply response:", res); // Log the response to ensure success
+
       if (res.data.success) {
         toast.success("Successfully applied for the job!"); // Show success message
+        console.log("Toast message shown"); // Log to check if toast is triggered
 
         // Re-fetch the job data to update the component state
-        await fetchSingleJob();
+        await fetchSingleJob(); // Ensure the job data is refreshed
       }
     } catch (err) {
       console.error("Error applying for job:", err);
@@ -66,7 +91,7 @@ const JobDescription = () => {
           "Failed to apply for the job. Please try again."
       );
     } finally {
-      setIsLoading(false); // Stop loading
+      setIsLoading(false); // Stop loading after applying
     }
   };
 
@@ -137,6 +162,9 @@ const JobDescription = () => {
             </Button>
           </motion.div>
         </div>
+
+        {/* Show loading spinner if the job data is being fetched or applied */}
+        {isLoading && <LoadingSpinner />}
 
         <motion.div
           className="my-6 space-y-4"

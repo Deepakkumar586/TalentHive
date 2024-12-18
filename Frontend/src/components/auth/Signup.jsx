@@ -209,11 +209,13 @@ const Signup = () => {
               Signup
             </Button>
           )}
+          
+
           <p className="text-center text-gray-700 mt-4">
             Already Have an Account?{" "}
             <Link
               to="/login"
-              className="text-purple-600 hover:underline transition duration-300"
+              className="text-purple-600 underline transition duration-300"
             >
               Login
             </Link>

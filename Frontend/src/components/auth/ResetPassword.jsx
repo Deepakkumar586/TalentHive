@@ -1,69 +1,86 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Navbar from "../shared/Navbar";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
-import { RadioGroup } from "../ui/radio-group";
 import { Button } from "../ui/button";
-import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { USER_API_END_POINT } from "@/utils/constant";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
 import { Loader2 } from "lucide-react";
-import { setLoading, setUser } from "@/redux/userSlice";
+import { setLoading } from "@/redux/userSlice";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
-const Login = () => {
-  const { user } = useSelector((state) => state.user);
+const ResetPassword = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading } = useSelector((store) => store.user);
+
+  // State to handle form input
   const [input, setInput] = useState({
     email: "",
-    password: "",
-    role: "",
+    newPassword: "",
+    confirmNewPassword: "",
+    otp: "",
   });
 
+  // Handle input changes
   const changeEventHandler = (event) => {
     const { name, value } = event.target;
     setInput((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Login Handler
-  const loginHandler = async (event) => {
+  // Reset Password Handler
+  const ResetPasswordHandler = async (event) => {
     event.preventDefault();
+
+    // Simple validation checks
+    if (
+      !input.email ||
+      !input.newPassword ||
+      !input.confirmNewPassword ||
+      !input.otp
+    ) {
+      toast.error("Please fill in all fields.");
+      return;
+    }
+
+    if (input.newPassword !== input.confirmNewPassword) {
+      toast.error("Passwords do not match.");
+      return;
+    }
+
     try {
       dispatch(setLoading(true));
-      const res = await axios.post(USER_API_END_POINT + "/login", input, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      });
+      const res = await axios.post(
+        `${USER_API_END_POINT}/resetPassword`,
+        input,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
 
       if (res.data.success) {
-        dispatch(setUser(res.data.user));
         toast.success(res.data.message);
-        navigate("/");
+        navigate("/login");
       }
     } catch (err) {
       console.error(err);
       toast.error(
-        err.response?.data?.message || "Login failed. Please try again."
+        err.response?.data?.message ||
+          "Reset Password failed. Please try again."
       );
     } finally {
       dispatch(setLoading(false));
     }
   };
 
-  useEffect(() => {
-    if (user) {
-      navigate("/");
-    }
-  }, []);
-
   return (
-    <div className="min-h-screen  flex flex-col">
+    <div className="min-h-screen flex flex-col">
       <Navbar />
       <div className="flex flex-grow items-center justify-center p-4">
         <motion.div
@@ -73,7 +90,7 @@ const Login = () => {
           transition={{ duration: 0.6 }}
         >
           <h1 className="text-2xl font-bold text-center text-purple-700 mb-4">
-            Log In
+            Reset Password
           </h1>
 
           {/* Email Input */}
@@ -90,49 +107,47 @@ const Login = () => {
             />
           </div>
 
-          {/* Password Input */}
+          {/* OTP Input */}
           <div>
-            <Label className="block mb-2 text-gray-600">Password</Label>
+            <Label className="block mb-2 text-gray-600">OTP</Label>
             <Input
-              type="password"
-              placeholder="Your password"
-              name="password"
-              value={input.password}
+              type="number"
+              name="otp"
+              value={input.otp}
               onChange={changeEventHandler}
               className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:outline-none transition-all"
               required
             />
           </div>
 
-          {/* Role Selection */}
+          {/* New Password Input */}
           <div>
-            <Label className="block mb-2 text-gray-600">Select Role</Label>
-            <RadioGroup className="flex items-center space-x-6">
-              <div className="flex items-center">
-                <Input
-                  type="radio"
-                  name="role"
-                  value="student"
-                  checked={input.role === "student"}
-                  onChange={changeEventHandler}
-                  className="focus:ring-blue-400 text-blue-500"
-                  required
-                />
-                <Label className="ml-2 text-gray-600">Student</Label>
-              </div>
-              <div className="flex items-center">
-                <Input
-                  type="radio"
-                  name="role"
-                  value="recruiter"
-                  checked={input.role === "recruiter"}
-                  onChange={changeEventHandler}
-                  className="focus:ring-blue-400 text-blue-500"
-                  required
-                />
-                <Label className="ml-2 text-gray-600">Recruiter</Label>
-              </div>
-            </RadioGroup>
+            <Label className="block mb-2 text-gray-600">New Password</Label>
+            <Input
+              type="password"
+              placeholder="Your New password"
+              name="newPassword"
+              value={input.newPassword}
+              onChange={changeEventHandler}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:outline-none transition-all"
+              required
+            />
+          </div>
+
+          {/* Confirm New Password Input */}
+          <div>
+            <Label className="block mb-2 text-gray-600">
+              Confirm New Password
+            </Label>
+            <Input
+              type="password"
+              placeholder="Confirm new password"
+              name="confirmNewPassword"
+              value={input.confirmNewPassword}
+              onChange={changeEventHandler}
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:outline-none transition-all"
+              required
+            />
           </div>
 
           {/* Submit Button */}
@@ -147,33 +162,16 @@ const Login = () => {
           ) : (
             <Button
               type="submit"
-              onClick={loginHandler}
+              onClick={ResetPasswordHandler}
               className="w-full py-3 bg-purple-500 text-white font-semibold rounded-lg hover:bg-purple-600 transition-all"
             >
-              Log In
+              Reset Password
             </Button>
           )}
-
-          <Link to="/ForgotPassword">
-            <span className="text-purple-500 cursor-pointer mt-10 underline">
-              Forgot Password
-            </span>
-          </Link>
-
-          {/* Sign Up Link */}
-          <p className="text-center text-gray-600 mt-4">
-            Don't have an account?{" "}
-            <Link
-              to="/signup"
-              className="text-purple-600 underline transition duration-300"
-            >
-              Sign Up
-            </Link>
-          </p>
         </motion.div>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default ResetPassword;
