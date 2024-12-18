@@ -16,9 +16,6 @@ const useGetAllCompanies = () => {
           `${COMPANY_API_END_POINT}/find/user/allCompany`, // Update with the actual backend endpoint
           { withCredentials: true } // Ensure cookies are sent for authentication, if required
         );
-
-        // Log and update Redux state if the request is successful
-        console.log("Fetched companies:", response.data);
         if (response.data.success) {
           dispatch(setCompanies(response.data.companies));
         } else {

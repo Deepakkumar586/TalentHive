@@ -48,7 +48,7 @@ exports.signup = async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -113,7 +113,7 @@ exports.login = async (req, res) => {
         success: true,
       });
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -128,7 +128,7 @@ exports.logout = async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 

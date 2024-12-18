@@ -54,7 +54,6 @@ const ForgotPassword = () => {
     } finally {
       dispatch(setLoading(false));
     }
-    console.log(formData.email);
   };
 
   return (

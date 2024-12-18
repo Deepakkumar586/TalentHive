@@ -6,8 +6,6 @@ const cloudinary = require("../utils/cloudinary");
 
 exports.registerCompany = async (req, res) => {
   try {
-    // console.log("Request Body:", req.body); // Debug incoming data
-
     const { companyName, description, website, location } = req.body;
 
     // Validate request payload
@@ -54,9 +52,7 @@ exports.registerCompany = async (req, res) => {
 exports.getCompany = async (req, res) => {
   try {
     const userId = req.id; // logged in user id
-    // console.log(userId);
     const companies = await Company.find({ userId });
-    console.log("companies : ", companies);
     if (companies.length == 0) {
       return res.status(404).json({
         message: "Companies not found.",
@@ -68,7 +64,7 @@ exports.getCompany = async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -88,7 +84,6 @@ exports.getCompanyById = async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.log(error);
     return res.status(500).json({
       message: "An error occurred while fetching the company with Id.",
       success: false,
@@ -99,9 +94,6 @@ exports.getCompanyById = async (req, res) => {
 // update company info
 exports.updateCompany = async (req, res) => {
   try {
-    // console.log("req.file:", req.file); // Log the file object
-    // console.log("req.body:", req.body); // Log the body data
-
     const { name, description, website, location } = req.body;
 
     if (!req.file) {

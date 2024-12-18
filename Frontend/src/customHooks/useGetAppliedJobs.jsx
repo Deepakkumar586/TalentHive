@@ -21,7 +21,7 @@ const useGetAppliedJobs = () => {
           dispatch(setAppliedJobs(res.data.applications));
         }
       } catch (err) {
-        console.log("Error fetching applied jobs: ", err);
+        console.error("Error fetching applied jobs: ", err);
       }
     };
 

@@ -20,7 +20,7 @@ const Footer = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="font-bold text-2xl text-[#8338ec]">JobPortal</h2>
+            <h2 className="font-bold text-2xl text-[#8338ec]">TalentHive</h2>
             <p className="text-sm text-gray-400">
               Your gateway to the best job opportunities. We connect job seekers
               with recruiters.

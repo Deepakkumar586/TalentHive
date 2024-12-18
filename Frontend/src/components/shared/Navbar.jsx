@@ -49,7 +49,7 @@ const Navbar = () => {
         {/* Logo */}
         <div className="cursor-pointer">
           <h1 className="text-2xl font-bold text-[#8338ec] hover:text-[#3f0294] transition-colors duration-300">
-            Job<span className="text-[#8338ec]">Portal</span>
+            Talent<span className="text-[#8338ec]">Hive</span>
           </h1>
         </div>
 

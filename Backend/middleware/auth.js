@@ -5,7 +5,6 @@ const User = require("../models/user");
 const userAuth = async (req, res, next) => {
   try {
     const token = req.cookies.token;
-    console.log("Token:", token); // Log the token to see if it's being sent
     if (!token) {
       return res.status(401).json({
         message: "User not authenticated",
@@ -19,11 +18,10 @@ const userAuth = async (req, res, next) => {
         success: false,
       });
     }
-    console.log("Decoded token:", decode); // Log the decoded token for debugging
     req.id = decode.userId;
     next();
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ message: "Server Error", success: false });
   }
 };

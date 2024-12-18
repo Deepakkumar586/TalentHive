@@ -75,11 +75,8 @@ const JobDescription = () => {
         { withCredentials: true }
       );
 
-      console.log("Apply response:", res); // Log the response to ensure success
-
       if (res.data.success) {
         toast.success("Successfully applied for the job!"); // Show success message
-        console.log("Toast message shown"); // Log to check if toast is triggered
 
         // Re-fetch the job data to update the component state
         await fetchSingleJob(); // Ensure the job data is refreshed
