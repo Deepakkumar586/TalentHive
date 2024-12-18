@@ -3,13 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon Backend/server.js",
-    "build": "cd Frontend && npm install && npm run build",
-    "start": "node Backend/server.js"
+    "build": "cd Frontend && npm install && npm run build", 
+    "start": "npm install && node Backend/server.js" 
   },
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cloudinary": "^2.5.1",
