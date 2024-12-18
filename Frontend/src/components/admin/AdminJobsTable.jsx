@@ -37,9 +37,11 @@ const AdminJobsTable = () => {
   }, [allAdminJobs, searchJobByText]);
 
   return (
-    <div>
+    <div className="overflow-x-auto bg-white rounded-lg shadow-md">
       <Table>
-        <TableCaption>A List of your recent Posted Jobs</TableCaption>
+        <TableCaption className="text-lg font-semibold text-purple-600">
+          A List of Your Recently Posted Jobs
+        </TableCaption>
         <TableHeader>
           <TableRow>
             <TableHead>Company Name</TableHead>
@@ -51,26 +53,21 @@ const AdminJobsTable = () => {
 
         <TableBody>
           {filterJobs?.map((job, index) => (
-            <tr key={index}>
+            <TableRow key={index} className="hover:bg-purple-50">
               <TableCell>{job?.company?.name}</TableCell>
               <TableCell>{job?.title}</TableCell>
               <TableCell>{job.createdAt.split("T")[0]}</TableCell>
-              <TableCell className="text-right cursor-pointer">
+              <TableCell className="text-right">
                 <Popover>
                   <PopoverTrigger>
-                    <MoreHorizontal />
+                    <MoreHorizontal className="text-purple-600 cursor-pointer hover:text-purple-700" />
                   </PopoverTrigger>
                   <PopoverContent className="w-32">
                     <div
-                      onClick={() => navigate(`/admin/companies/${job._id}`)}
-                      className="flex items-center gap-2 cursor-pointer"
-                    >
-                      <Edit2 width={16} />
-                      <span>Edit</span>
-                    </div>
-                    <div
-                      onClick={() => navigate(`/admin/jobs/${job._id}/applicants`)}
-                      className="flex items-center w-fit gap-2 cursor-pointer mt-2"
+                      onClick={() =>
+                        navigate(`/admin/jobs/${job._id}/applicants`)
+                      }
+                      className="flex items-center gap-2 cursor-pointer p-2 mt-2 hover:bg-purple-50 rounded-md"
                     >
                       <Eye className="w-4" />
                       <span>Applicants</span>
@@ -78,7 +75,7 @@ const AdminJobsTable = () => {
                   </PopoverContent>
                 </Popover>
               </TableCell>
-            </tr>
+            </TableRow>
           ))}
         </TableBody>
       </Table>

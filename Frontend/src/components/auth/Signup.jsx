@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../shared/Navbar";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
@@ -17,6 +17,7 @@ const Signup = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loading = useSelector((store) => store.user.loading);
+  const { user } = useSelector((state) => state.user);
   const [input, setInput] = useState({
     fullname: "",
     email: "",
@@ -74,6 +75,11 @@ const Signup = () => {
     }
   };
 
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, []);
   return (
     <div className=" min-h-screen flex flex-col">
       <Navbar />

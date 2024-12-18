@@ -1,11 +1,13 @@
-import React from "react";
 import { Badge } from "./ui/badge";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const LatestJobsCard = ({ job }) => {
+  const navigate = useNavigate();
   return (
     <motion.div
-      className="p-6 rounded-lg shadow-lg bg-gradient-to-br from-purple-50 via-white to-purple-100 border border-gray-200 hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-2"
+      onClick={() => navigate(`/description/${job._id}`)}
+      className="p-6 rounded-lg shadow-lg bg-gradient-to-br from-purple-50 via-white to-purple-100 border border-gray-200 hover:shadow-xl transition-all duration-300 ease-in-out transform hover:-translate-y-2 cursor-pointer"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8 }}

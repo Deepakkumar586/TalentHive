@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Navbar from "../shared/Navbar";
+import Footer from "../Footer";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
 import { Button } from "../ui/button";
@@ -15,7 +16,7 @@ import axios from "axios";
 import { JOB_API_END_POINT } from "@/utils/constant";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
-import { Loader2 } from "lucide-react";
+import { Loader2, Briefcase, MapPin, DollarSign, Users } from "lucide-react";
 
 const PostJobs = () => {
   const [input, setInput] = useState({
@@ -34,12 +35,10 @@ const PostJobs = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  // Handle Input Change
   const changeEventHandler = (event) => {
     setInput({ ...input, [event.target.name]: event.target.value });
   };
 
-  // Handle Select Input
   const handleSelectChange = (value) => {
     const selectedCompany = companies.find(
       (company) => company.name.toLowerCase() === value.toLowerCase()
@@ -47,16 +46,13 @@ const PostJobs = () => {
     setInput({ ...input, companyId: selectedCompany?._id });
   };
 
-  // Form Submit Handler
   const submitHandler = async (e) => {
-    e.preventDefault(); // Prevent default behavior
+    e.preventDefault();
     try {
       setLoading(true);
 
       const res = await axios.post(JOB_API_END_POINT + "/create/job", input, {
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
 
@@ -69,137 +65,172 @@ const PostJobs = () => {
       setLoading(false);
     }
   };
+
   return (
-    <div>
+    <div className="bg-gray-100 min-h-screen">
       <Navbar />
-      <div className="flex justify-center items-center w-screen mt-28">
+      <div className="flex justify-center items-center mt-14 mb-[-60px] py-7">
         <form
           onSubmit={submitHandler}
-          className="p-8 max-w-4xl border-gray-200 shadow-lg rounded-md"
+          className="w-full max-w-xl bg-white shadow-lg rounded-xl p-8 space-y-6"
+          style={{
+            boxShadow: "0px 4px 10px rgba(128, 0, 128, 0.3)",
+          }}
         >
-          <div className="grid grid-cols-2 gap-3">
+          <h2 className="text-3xl font-bold text-center text-purple-600 mb-6">
+            Post a New Job
+          </h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {/* Title */}
             <div>
-              <Label>Title</Label>
+              <Label className="font-semibold flex items-center gap-2">
+                <Briefcase size={18} className="text-purple-600" /> Job Title
+              </Label>
               <Input
                 type="text"
                 name="title"
                 value={input.title}
                 onChange={changeEventHandler}
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
+                placeholder="e.g., Software Developer"
+                className="mt-1 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-300"
               />
             </div>
+
+            {/* Location */}
             <div>
-              <Label>Description</Label>
-              <Input
-                type="text"
-                name="description"
-                value={input.description}
-                onChange={changeEventHandler}
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
-              />
-            </div>
-            <div>
-              <Label>Location</Label>
+              <Label className="font-semibold flex items-center gap-2">
+                <MapPin size={18} className="text-purple-600" /> Location
+              </Label>
               <Input
                 type="text"
                 name="location"
                 value={input.location}
                 onChange={changeEventHandler}
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
+                placeholder="e.g., New York, Remote"
+                className="mt-1 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-300"
               />
             </div>
+
+            {/* Salary */}
             <div>
-              <Label>Requirements</Label>
-              <Input
-                type="text"
-                name="requirements"
-                value={input.requirements}
-                onChange={changeEventHandler}
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
-              />
-            </div>
-            <div>
-              <Label>Salary</Label>
+              <Label className="font-semibold flex items-center gap-2">
+                <DollarSign size={18} className="text-purple-600" /> Salary ($)
+              </Label>
               <Input
                 type="number"
                 name="salary"
                 value={input.salary}
                 onChange={changeEventHandler}
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
+                placeholder="e.g., 80000"
+                className="mt-1 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-300"
               />
             </div>
+
+            {/* Position */}
             <div>
-              <Label>Job Type</Label>
-              <Input
-                type="text"
-                name="jobType"
-                value={input.jobType}
-                onChange={changeEventHandler}
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
-              />
-            </div>
-            <div>
-              <Label>Experience</Label>
-              <Input
-                type="text"
-                name="experience"
-                value={input.experience}
-                onChange={changeEventHandler}
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
-              />
-            </div>
-            <div>
-              <Label>Position</Label>
+              <Label className="font-semibold flex items-center gap-2">
+                <Users size={18} className="text-purple-600" /> Positions Available
+              </Label>
               <Input
                 type="number"
                 name="position"
                 value={input.position}
                 onChange={changeEventHandler}
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 my-1"
+                placeholder="e.g., 5"
+                className="mt-1 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-300"
               />
             </div>
 
-            {companies.length > 0 ? (
-              <div>
-                <Label>Select Company</Label>
+            {/* Job Type */}
+            <div>
+              <Label className="font-semibold flex items-center gap-2">
+                <Briefcase size={18} className="text-purple-600" /> Job Type
+              </Label>
+              <Input
+                type="text"
+                name="jobType"
+                value={input.jobType}
+                onChange={changeEventHandler}
+                placeholder="e.g., Full-Time"
+                className="mt-1 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-300"
+              />
+            </div>
+
+            {/* Experience */}
+            <div>
+              <Label className="font-semibold flex items-center gap-2">
+                <Briefcase size={18} className="text-purple-600" /> Experience
+              </Label>
+              <Input
+                type="text"
+                name="experience"
+                value={input.experience}
+                onChange={changeEventHandler}
+                placeholder="e.g., 2+ years"
+                className="mt-1 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-300"
+              />
+            </div>
+
+            {/* Requirements */}
+            <div className="col-span-1 sm:col-span-2">
+              <Label className="font-semibold flex items-center gap-2">
+                <Briefcase size={18} className="text-purple-600" /> Job Requirements
+              </Label>
+              <Input
+                type="text"
+                name="requirements"
+                value={input.requirements}
+                onChange={changeEventHandler}
+                placeholder="e.g., React, Node.js, SQL"
+                className="mt-1 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-300"
+              />
+            </div>
+
+            {/* Company Select */}
+            <div className="col-span-1 sm:col-span-2">
+              <Label className="font-semibold flex items-center gap-2">
+                <Briefcase size={18} className="text-purple-600" /> Company
+              </Label>
+              {companies.length > 0 ? (
                 <Select onValueChange={handleSelectChange}>
-                  <SelectTrigger className="w-[180px]">
+                  <SelectTrigger className="mt-1 p-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-300">
                     <SelectValue placeholder="Select a Company" />
                   </SelectTrigger>
                   <SelectContent>
                     {companies.map((company) => (
                       <SelectItem key={company._id} value={company.name}>
-                        {company?.name}
+                        {company.name}
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
-              </div>
-            ) : (
-              <p className="text-xs text-red-600 text-center my-3 font-bold col-span-2">
-                * Please Register a Company first, before posting a job
-              </p>
-            )}
+              ) : (
+                <p className="text-red-600 text-sm mt-2">
+                  * Register a company first to post jobs.
+                </p>
+              )}
+            </div>
           </div>
 
-          {loading ? (
-            <Button
-              className="w-full py-2 text-white bg-gray-800 rounded-md disabled:opacity-50"
-              disabled
-            >
-              <Loader2 className="m-2 h-4 w-4 animate-spin" />
-              Loading...
-            </Button>
-          ) : (
-            <Button
-              type="submit"
-              className="w-full mt-4 py-2 text-white bg-gray-800 rounded-md"
-            >
-              Post a New Job
-            </Button>
-          )}
+          <Button
+            type="submit"
+            disabled={loading}
+            className={`w-full py-3 mt-6 rounded-lg font-semibold text-white transition-all ${
+              loading
+                ? "bg-gray-400"
+                : "bg-purple-600 hover:bg-purple-700 focus:ring-4 focus:ring-purple-300"
+            }`}
+          >
+            {loading ? (
+              <Loader2 className="h-5 w-5 animate-spin" />
+            ) : (
+              "Post Job"
+            )}
+          </Button>
         </form>
       </div>
+      <Footer />
     </div>
   );
 };

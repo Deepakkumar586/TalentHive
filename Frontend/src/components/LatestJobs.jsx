@@ -1,10 +1,10 @@
-import React from "react";
 import LatestJobsCard from "./LatestJobsCard";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 
 const LatestJobs = () => {
   const { alljobs } = useSelector((store) => store.alljobs);
+
   console.log("Redux job data:", alljobs);
   return (
     <div className="max-w-7xl mx-auto my-20 px-4">

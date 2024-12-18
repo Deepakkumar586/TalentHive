@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "../shared/Navbar";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
@@ -14,6 +14,7 @@ import { setLoading, setUser } from "@/redux/userSlice";
 import { motion } from "framer-motion";
 
 const Login = () => {
+  const { user } = useSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { loading } = useSelector((store) => store.user);
@@ -28,7 +29,7 @@ const Login = () => {
     setInput((prev) => ({ ...prev, [name]: value }));
   };
 
-  // login Handler
+  // Login Handler
   const loginHandler = async (event) => {
     event.preventDefault();
     try {
@@ -55,57 +56,57 @@ const Login = () => {
     }
   };
 
+  useEffect(() => {
+    if (user) {
+      navigate("/");
+    }
+  }, []);
+
   return (
-    <div className="bg-gray-50 min-h-screen flex flex-col">
+    <div className="min-h-screen bg-gradient-to-b from-white to-blue-100 flex flex-col">
       <Navbar />
-      <div className="flex flex-grow items-center justify-center">
+      <div className="flex flex-grow items-center justify-center p-4">
         <motion.div
-          className="w-full max-w-md bg-white shadow-lg rounded-lg p-6 space-y-4"
+          className="w-full max-w-md bg-white shadow-lg rounded-xl p-8 space-y-6"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.6 }}
         >
-          <h1 className="font-bold text-2xl text-center text-gray-800 mb-4">
+          <h1 className="text-2xl font-bold text-center text-purple-700 mb-4">
             Log In
           </h1>
 
           {/* Email Input */}
           <div>
-            <Label className="block mb-2 font-medium text-gray-600">
-              Email
-            </Label>
+            <Label className="block mb-2 text-gray-600">Email</Label>
             <Input
               type="email"
-              placeholder="abc@example.com"
+              placeholder="example@example.com"
               name="email"
               value={input.email}
               onChange={changeEventHandler}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-[#8338ec] focus:border-[#8338ec]"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:outline-none transition-all"
               required
             />
           </div>
 
           {/* Password Input */}
           <div>
-            <Label className="block mb-2 font-medium text-gray-600">
-              Password
-            </Label>
+            <Label className="block mb-2 text-gray-600">Password</Label>
             <Input
               type="password"
-              placeholder="Password"
+              placeholder="Your password"
               name="password"
               value={input.password}
               onChange={changeEventHandler}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-[#8338ec] focus:border-[#8338ec]"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-300 focus:outline-none transition-all"
               required
             />
           </div>
 
           {/* Role Selection */}
           <div>
-            <Label className="block font-medium text-gray-600 mb-2">
-              Select Role
-            </Label>
+            <Label className="block mb-2 text-gray-600">Select Role</Label>
             <RadioGroup className="flex items-center space-x-6">
               <div className="flex items-center">
                 <Input
@@ -114,10 +115,10 @@ const Login = () => {
                   value="student"
                   checked={input.role === "student"}
                   onChange={changeEventHandler}
-                  className="cursor-pointer focus:ring-[#8338ec] text-[#8338ec]"
+                  className="focus:ring-blue-400 text-blue-500"
                   required
                 />
-                <Label className="ml-2">Student</Label>
+                <Label className="ml-2 text-gray-600">Student</Label>
               </div>
               <div className="flex items-center">
                 <Input
@@ -126,10 +127,10 @@ const Login = () => {
                   value="recruiter"
                   checked={input.role === "recruiter"}
                   onChange={changeEventHandler}
-                  className="cursor-pointer focus:ring-[#8338ec] text-[#8338ec]"
+                  className="focus:ring-blue-400 text-blue-500"
                   required
                 />
-                <Label className="ml-2">Recruiter</Label>
+                <Label className="ml-2 text-gray-600">Recruiter</Label>
               </div>
             </RadioGroup>
           </div>
@@ -137,27 +138,28 @@ const Login = () => {
           {/* Submit Button */}
           {loading ? (
             <Button
-              className="w-full py-2 text-white bg-gray-800 rounded-md disabled:opacity-50"
+              className="w-full py-3 bg-blue-400 text-white rounded-lg disabled:opacity-50"
               disabled
             >
-              <Loader2 className="m-2 h-4 w-4 animate-spin" />
+              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
               Loading...
             </Button>
           ) : (
             <Button
               type="submit"
               onClick={loginHandler}
-              className="w-full py-2 text-white bg-gray-800 rounded-md"
+              className="w-full py-3 bg-purple-500 text-white font-semibold rounded-lg hover:bg-purple-600 transition-all"
             >
               Log In
             </Button>
           )}
 
+          {/* Sign Up Link */}
           <p className="text-center text-gray-600 mt-4">
             Don't have an account?{" "}
             <Link
               to="/signup"
-              className="text-[#8338ec] hover:underline transition duration-300"
+              className="text-blue-500 hover:underline transition duration-300"
             >
               Sign Up
             </Link>

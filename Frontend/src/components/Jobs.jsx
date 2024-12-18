@@ -4,11 +4,31 @@ import FilterJobs from "./FilterJobs";
 import Job from "./Job";
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
 // const jobsArray = [1, 2, 3, 4, 5, 6, 7, 8];
 
 const Jobs = () => {
-  const { alljobs } = useSelector((store) => store.alljobs);
+  const { alljobs, studentSearchJob } = useSelector((store) => store.alljobs);
+  const [filterJobs, setFilterJobs] = useState(alljobs);
+
+  useEffect(() => {
+    if (studentSearchJob) {
+      const filteredJobs = alljobs.filter((job) => {
+        return (
+          job.title.toLowerCase().includes(studentSearchJob.toLowerCase()) ||
+          job.description
+            .toLowerCase()
+            .includes(studentSearchJob.toLowerCase()) ||
+          job.location.toLowerCase().includes(studentSearchJob.toLowerCase()) ||
+          job.salary.toLowerCase().includes(studentSearchJob.toLowerCase())
+        );
+      });
+      setFilterJobs(filteredJobs);
+    } else {
+      setFilterJobs(alljobs);
+    }
+  }, [alljobs, studentSearchJob]);
   return (
     <div>
       <Navbar />
@@ -26,7 +46,7 @@ const Jobs = () => {
           </motion.div>
 
           {/* Job Cards */}
-          {alljobs.length <= 0 ? (
+          {filterJobs.length <= 0 ? (
             <span>No jobs found</span>
           ) : (
             <motion.div
@@ -36,12 +56,13 @@ const Jobs = () => {
               className="flex-1 h-[88vh] overflow-y-auto pb-5"
             >
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {alljobs.map((job, index) => (
+                {filterJobs.map((job, index) => (
                   <motion.div
                     key={index}
-                    initial={{ y: 50, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    initial={{ x: 100, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    exit={{opacity: 0,x:-100}}
+                    transition={{ duration: 0.7, delay: index * 0.1 }}
                   >
                     <Job job={job} />
                   </motion.div>

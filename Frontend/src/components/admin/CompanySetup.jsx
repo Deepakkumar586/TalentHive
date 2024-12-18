@@ -1,10 +1,8 @@
-// import React from 'react'
-
-import { ArrowLeft, Loader2 } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { ArrowLeft, Loader2, Link, MapPin, FileText, User } from "lucide-react";
 import Navbar from "../shared/Navbar";
 import { Button } from "../ui/button";
 import { Label } from "../ui/label";
-import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import axios from "axios";
 import { COMPANY_API_END_POINT } from "@/utils/constant";
@@ -12,11 +10,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
 import useGetCompanyById from "@/customHooks/useGetCompanyById";
+import Footer from "../Footer";
 
 const CompanySetup = () => {
   const params = useParams();
   useGetCompanyById(params.id);
-  console.log("params id :", params.id);
   const [input, setInput] = useState({
     name: "",
     description: "",
@@ -26,10 +24,9 @@ const CompanySetup = () => {
   });
 
   const { singleCompany } = useSelector((store) => store.company);
-  console.log("Single Company", singleCompany);
-
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+
   const handleInputChange = (e) => {
     setInput({ ...input, [e.target.name]: e.target.value });
   };
@@ -44,10 +41,7 @@ const CompanySetup = () => {
     formData.append("location", input.location);
 
     if (input.file) {
-      console.log("File selected:", input.file); // Log file details
       formData.append("file", input.file);
-    } else {
-      console.log("No file selected!");
     }
 
     try {
@@ -67,14 +61,12 @@ const CompanySetup = () => {
         navigate("/admin/companies");
       }
     } catch (error) {
-      console.error("Error Response:", error.response?.data || error.message);
       toast.error("Error updating company details");
     } finally {
       setLoading(false);
     }
   };
 
-  // update the compnay details with field data
   useEffect(() => {
     setInput({
       name: singleCompany?.name || "",
@@ -84,78 +76,92 @@ const CompanySetup = () => {
       file: singleCompany?.file || null,
     });
   }, [singleCompany]);
+
   return (
     <div>
       <Navbar />
-      <div className="max-w-xl mx-auto my-10 mt-28">
-        <form
-        // onSubmit={submitHandler}
-        >
-          <div className="flex items-center gap-4 p-8">
-            <Button
-              onClick={() => navigate("/admin/companies")}
-              className="flex items-center gap-2 font-semibold text-gray-500 "
-              variant="outline"
-            >
-              <ArrowLeft />
-              <span>Back</span>
-            </Button>
-            <h1 className="font-bold text-xl">Company Details</h1>
-          </div>
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <Label>Company Name</Label>
+      <div className="max-w-xl mx-auto my-10 mt-20  bg-white shadow-lg rounded-xl p-8 border border-purple-300">
+        <div className="flex items-center gap-4 mb-6">
+          <Button
+            onClick={() => navigate("/admin/companies")}
+            className="flex items-center gap-2 font-semibold text-purple-600"
+            variant="outline"
+          >
+            <ArrowLeft />
+            <span>Back</span>
+          </Button>
+          <h1 className="font-bold text-2xl text-purple-600">
+            Company Details
+          </h1>
+        </div>
+        <form onSubmit={submitHandler}>
+          <div className="grid grid-cols-1 gap-4">
+            <div className="relative">
+              <Label className="font-semibold text-purple-600">
+                Company Name
+              </Label>
               <Input
                 type="text"
                 name="name"
                 value={input.name}
                 onChange={handleInputChange}
-                placeholder="company name"
+                placeholder="Company name"
+                className="mt-2 p-3 rounded-md border border-purple-300 focus:ring-2 focus:ring-purple-400 pl-10"
               />
+              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-purple-500" />
             </div>
-            <div>
-              <Label>Description</Label>
+            <div className="relative">
+              <Label className="font-semibold text-purple-600">
+                Description
+              </Label>
               <Input
                 type="text"
                 name="description"
                 value={input.description}
                 onChange={handleInputChange}
-                placeholder="company name"
+                placeholder="Company description"
+                className="mt-2 p-3 rounded-md border border-purple-300 focus:ring-2 focus:ring-purple-400 pl-10"
               />
+              <FileText className="absolute left-3 top-1/2 transform -translate-y-1/2 text-purple-500" />
             </div>
-            <div>
-              <Label>Website</Label>
+            <div className="relative">
+              <Label className="font-semibold text-purple-600">Website</Label>
               <Input
                 type="text"
                 name="website"
                 value={input.website}
                 onChange={handleInputChange}
-                placeholder="company name"
+                placeholder="Website URL"
+                className="mt-2 p-3 rounded-md border border-purple-300 focus:ring-2 focus:ring-purple-400 pl-10"
               />
+              <Link className="absolute left-3 top-1/2 transform -translate-y-1/2 text-purple-500" />
             </div>
-            <div>
-              <Label>Location</Label>
+            <div className="relative">
+              <Label className="font-semibold text-purple-600">Location</Label>
               <Input
                 type="text"
                 name="location"
                 value={input.location}
                 onChange={handleInputChange}
-                placeholder="company name"
+                placeholder="Company location"
+                className="mt-2 p-3 rounded-md border border-purple-300 focus:ring-2 focus:ring-purple-400 pl-10"
               />
+              <MapPin className="absolute left-3 top-1/2 transform -translate-y-1/2 text-purple-500" />
             </div>
-            <div>
-              <Label>Logo</Label>
+            <div className="relative">
+              <Label className="font-semibold text-purple-600">Logo</Label>
               <input
                 type="file"
                 onChange={(e) =>
                   setInput({ ...input, file: e.target.files[0] })
                 }
+                className="mt-2 p-3 rounded-md border border-purple-300 focus:ring-2 focus:ring-purple-400"
               />
             </div>
           </div>
           {loading ? (
             <Button
-              className="w-full py-2 text-white bg-gray-800 rounded-md disabled:opacity-50"
+              className="w-full py-2 text-white bg-purple-600 rounded-md disabled:opacity-50"
               disabled
             >
               <Loader2 className="m-2 h-4 w-4 animate-spin" />
@@ -164,14 +170,14 @@ const CompanySetup = () => {
           ) : (
             <Button
               type="submit"
-              onClick={submitHandler}
-              className="w-full py-2 text-white bg-gray-800 rounded-md"
+              className="w-full py-2 text-white bg-purple-600 rounded-md mt-4 hover:bg-purple-700"
             >
               Update
             </Button>
           )}
         </form>
       </div>
+      <Footer />
     </div>
   );
 };

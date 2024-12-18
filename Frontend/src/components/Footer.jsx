@@ -1,6 +1,6 @@
 import React from "react";
 import { motion } from "framer-motion";
-import * as LucideIcons from "lucide-react";  // Import all icons
+import * as LucideIcons from "lucide-react"; // Import all icons
 
 const Footer = () => {
   return (
@@ -22,7 +22,8 @@ const Footer = () => {
           >
             <h2 className="font-bold text-2xl text-[#8338ec]">JobPortal</h2>
             <p className="text-sm text-gray-400">
-              Your gateway to the best job opportunities. We connect job seekers with recruiters.
+              Your gateway to the best job opportunities. We connect job seekers
+              with recruiters.
             </p>
           </motion.div>
 
@@ -36,16 +37,36 @@ const Footer = () => {
             <h3 className="font-semibold text-lg">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <a href="#home" className="hover:text-[#8338ec] transition-all duration-300">Home</a>
+                <a
+                  href="#home"
+                  className="hover:text-[#8338ec] transition-all duration-300"
+                >
+                  Home
+                </a>
               </li>
               <li>
-                <a href="#about" className="hover:text-[#8338ec] transition-all duration-300">About</a>
+                <a
+                  href="#about"
+                  className="hover:text-[#8338ec] transition-all duration-300"
+                >
+                  About
+                </a>
               </li>
               <li>
-                <a href="#jobs" className="hover:text-[#8338ec] transition-all duration-300">Jobs</a>
+                <a
+                  href="#jobs"
+                  className="hover:text-[#8338ec] transition-all duration-300"
+                >
+                  Jobs
+                </a>
               </li>
               <li>
-                <a href="#contact" className="hover:text-[#8338ec] transition-all duration-300">Contact</a>
+                <a
+                  href="#contact"
+                  className="hover:text-[#8338ec] transition-all duration-300"
+                >
+                  Contact
+                </a>
               </li>
             </ul>
           </motion.div>
@@ -57,9 +78,15 @@ const Footer = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
           >
-            <h3 className="font-semibold text-lg">Contact</h3>
-            <p className="text-sm text-gray-400">Email: support@jobportal.com</p>
-            <p className="text-sm text-gray-400">Phone: +1 234 567 890</p>
+            <h3 className="font-semibold text-lg hover:text-[#8338ec] cursor-pointer">
+              Contact
+            </h3>
+            <p className="text-sm text-gray-400 hover:text-[#8338ec] cursor-pointer">
+              Email: aryanrajj1234@gmail.com
+            </p>
+            <p className="text-sm text-gray-400 hover:text-[#8338ec] cursor-pointer">
+              Phone: +91 6392862240
+            </p>
           </motion.div>
 
           {/* Social Media */}
@@ -72,25 +99,20 @@ const Footer = () => {
             <h3 className="font-semibold text-lg">Follow Us</h3>
             <div className="flex gap-4">
               <a
-                href="https://facebook.com"
-                className="text-gray-400 hover:text-[#8338ec] transition-all duration-300"
-              >
-                <LucideIcons.Facebook size={24} />
-              </a>
-              <a
-                href="https://twitter.com"
+                href="https://x.com/deeparyan345"
                 className="text-gray-400 hover:text-[#8338ec] transition-all duration-300"
               >
                 <LucideIcons.Twitter size={24} />
+                {/* <LucideIcons.X size={24} /> */}
               </a>
               <a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/in/deepak-kumar-41bab6221/"
                 className="text-gray-400 hover:text-[#8338ec] transition-all duration-300"
               >
                 <LucideIcons.Linkedin size={24} />
               </a>
               <a
-                href="https://github.com"
+                href="https://github.com/Deepakkumar586"
                 className="text-gray-400 hover:text-[#8338ec] transition-all duration-300"
               >
                 <LucideIcons.Github size={24} />

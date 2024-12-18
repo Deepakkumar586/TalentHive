@@ -25,13 +25,6 @@ const Job = ({ job }) => {
             ? "Today"
             : `${daysAgo(job?.createdAt)} days ago`}
         </p>
-        <Button
-          variant="outline"
-          className="rounded-full hover:bg-purple-100"
-          size="icon"
-        >
-          <Bookmark className="text-purple-500" />
-        </Button>
       </div>
       <div className="flex items-center gap-3 my-4">
         <Avatar className="ring-2 ring-purple-200">
