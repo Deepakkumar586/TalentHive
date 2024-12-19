@@ -5,7 +5,7 @@ const validator = require("validator");
 const cloudinary = require("../utils/cloudinary");
 const getDataUri = require("../utils/dataUri");
 const generateOTP = require("../utils/generateOTP");
-const nodemailer = require("nodemailer");
+const nodemailer = require("nodemailer"); // Adjust according to your file handling function
 
 exports.signup = async (req, res) => {
   try {
@@ -17,19 +17,43 @@ exports.signup = async (req, res) => {
         success: false,
       });
     }
+
+    // Email Validation
+    if (!validator.isEmail(email)) {
+      return res.status(400).json({
+        message: "Invalid email format.",
+        success: false,
+      });
+    }
+
+    // Password Validation
+    if (
+      password.length < 8 ||
+      !/\d/.test(password) ||
+      !/[A-Z]/.test(password) ||
+      !/[!@#$%^&*]/.test(password)
+    ) {
+      return res.status(400).json({
+        message:
+          "Password must be at least 8 characters long, contain a number, an uppercase letter, and a special character.",
+        success: false,
+      });
+    }
+
     // Handle file with Cloudinary
     const file = req.file;
     const fileUri = getDataUri(file);
     const cloudResponse = await cloudinary.uploader.upload(fileUri.content);
 
-    //  find user
+    // Find user
     const user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({
-        message: "User already exist with this email.",
+        message: "User already exists with this email.",
         success: false,
       });
     }
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const userData = await User.create({
@@ -42,13 +66,86 @@ exports.signup = async (req, res) => {
       },
     });
 
+    // Send confirmation email
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      from: `TalentHive ${process.env.EMAIL_USER}`, // Sender's email
+      to: email, // Recipient's email
+      subject: "Welcome to TalentHive!",
+      html: `
+        <html>
+          <head>
+            <style>
+              body {
+                font-family: Arial, sans-serif;
+                background-color: #f7f7f7;
+                padding: 20px;
+              }
+              .container {
+                background-color: #ffffff;
+                padding: 30px;
+                border-radius: 8px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                width: 60%;
+                margin: 0 auto;
+              }
+              h1 {
+                color: #2c3e50;
+              }
+              p {
+                color: #34495e;
+                font-size: 16px;
+                line-height: 1.5;
+              }
+              .button {
+                display: inline-block;
+                background-color: #3498db;
+                color: white;
+                padding: 12px 20px;
+                font-size: 16px;
+                text-decoration: none;
+                border-radius: 5px;
+                margin-top: 20px;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <h1>Welcome to TalentHive, ${fullname}!</h1>
+              <p>We're excited to have you on board. TalentHive is the perfect platform for students and recruiters to connect, learn, and grow.</p>
+              <p>Your account has been created successfully, and you're all set to start exploring.</p>
+              <a href="http://your-app-link.com" class="button">Get Started</a>
+            </div>
+          </body>
+        </html>
+      `,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error("Error sending email:", error);
+      }
+    });
+
     return res.status(201).json({
-      message: "Account created successfully.",
+      message:
+        "Account created successfully. A confirmation email has been sent.",
       data: userData,
       success: true,
     });
   } catch (error) {
     console.error(error);
+    return res.status(500).json({
+      message: "Server error.",
+      success: false,
+    });
   }
 };
 
@@ -290,6 +387,7 @@ exports.resetPassword = async (req, res) => {
   const { email, otp, newPassword, confirmNewPassword } = req.body;
 
   try {
+    // Check if all fields are provided
     if (!email || !otp || !newPassword || !confirmNewPassword) {
       return res.status(400).json({
         message: "All fields are required.",
@@ -297,7 +395,26 @@ exports.resetPassword = async (req, res) => {
       });
     }
 
-    // matched new pasword and confirm new password
+    // Validate Email
+    if (!validator.isEmail(email)) {
+      return res.status(400).json({
+        message: "Invalid email format.",
+        success: false,
+      });
+    }
+
+    // Validate password strength
+    const passwordRegex =
+      /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+    if (!passwordRegex.test(newPassword)) {
+      return res.status(400).json({
+        message:
+          "Password must be at least 8 characters long, contain a number, an uppercase letter, and a special character.",
+        success: false,
+      });
+    }
+
+    // Check if new password and confirm password match
     if (newPassword !== confirmNewPassword) {
       return res.status(400).json({
         message: "New password and confirm new password do not match.",
