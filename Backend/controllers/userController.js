@@ -121,7 +121,7 @@ exports.signup = async (req, res) => {
               <h1>Welcome to TalentHive, ${fullname}!</h1>
               <p>We're excited to have you on board. TalentHive is the perfect platform for students and recruiters to connect, learn, and grow.</p>
               <p>Your account has been created successfully, and you're all set to start exploring.</p>
-              <a href="http://your-app-link.com" class="button">Get Started</a>
+              <a href="https://talenthive-kkxx.onrender.com/login" class="button">Get Started</a>
             </div>
           </body>
         </html>
